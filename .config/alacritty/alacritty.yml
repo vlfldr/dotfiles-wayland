@@ -1,0 +1,25 @@
+import:
+  - ~/clones/alacritty-theme/themes/gruvbox_dark.yml
+
+window:
+  opacity: 0.8
+  title: "~"
+  padding:
+    x: 8
+    y: 8
+
+  dynamic_padding: false
+
+font:
+  normal:
+    family: CozetteVector
+
+  # must be adjusted along with desired size
+  size: 12
+  
+  #bold:
+  #italic:
+  #bold_italic:
+
+
+live_config_reload: true

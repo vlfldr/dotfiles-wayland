@@ -1,0 +1,59 @@
+configuration {
+    font:   "CozetteVector 11.75";
+    combi-hide-mode-prefix: true;
+    display-drun: "";
+    tokenize: false;
+    terminal: "alacritty";
+    click-to-exit: true;
+}
+
+@theme "gruvbox-dark-soft"
+
+* {
+    bg: #534F4EFF;
+    border: #EBDBB2FF;
+    background-color: #00000000;
+    transparency: "real";
+    opacity: 75%;
+}
+
+window {
+    border: 2px;
+    border-color: @border;
+    padding: 10;
+    width: 30%;
+    border-radius: 2px;
+}
+
+listview {
+    highlight: none;
+    border: 0px;
+    lines: 7;
+    spacing: 5px;
+    scrollbar: false;
+}
+inputbar {
+    spacing:    					0px;
+    padding:    					1px;
+    children: [entry];
+}
+
+entry {
+    horizontal-align: 0.5;
+}
+textbox-prompt-sep {
+    expand:     false;
+    str:        "";
+    text-color: var(normal-foreground);
+}
+
+element {
+    border: 0px;
+    border-radius: 2.5px;
+    padding: 5px;
+}
+
+element-text {
+    horizontal-align: 0.5;
+}
+

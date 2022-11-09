@@ -1,0 +1,210 @@
+; vlfldr's eww bar
+; https://github.com/vlfldr
+
+; parent container
+(defwidget bar []
+  (centerbox :orientation "h"
+    :space-evenly false
+    (left-widgets)
+    (wintitle)
+    (tray)
+))
+
+; workspaces & MPD
+; both separate containers
+(defwidget left-widgets []
+  (box :orientation "h"
+    :space-evenly false
+    :halign "start"
+    (hyprland)
+    (mpd)
+))
+
+; right tray
+(defwidget tray []
+  (box :orientation "h"
+    :space-evenly false
+    :spacing 15
+    :class "container"
+    :halign "end"
+    ;(bluetooth)
+    (brightness)
+    (volume)
+    (wifi)
+    (battery)
+    (clock)
+))
+
+; hyprland workspaces
+(defwidget hyprland [] 
+  (literal :content hyprvar))
+(deflisten hyprvar `python scripts/hypr.py`)
+
+; mpd control
+(defwidget mpd []
+  (revealer :transition "slideright"
+    :duration "500ms"
+    :reveal showMPD
+      (eventbox
+        :onhover "eww update showSeek=true" 
+        :onhoverlost "eww update showSeek=false" 
+    (box :class "container mpd-container" 
+         :space-evenly false 
+         :spacing 0
+         :orientation "v"
+      (revealer :transition "slidedown" :duration "500ms" :reveal {!showSeek}
+      (box :space-evenly false :spacing 10 
+      (button :onclick "mpc toggle" :class "mpd-label-icon" playIcon) 
+      (button :onclick "hyprctl dispatch workspace 5" :class "mpd-info" getMPD)
+    (image :path albumArt :image-width 32 :image-height 32)))
+        (revealer :transition "slidedown"
+          :duration "500ms"
+          :reveal showSeek
+        (scale :value mpdProgress 
+              :min 0 
+              :max 101 
+              :class "mpd-slider"
+              :onchange "mpc seek {}%"))
+    ))))
+(defvar albumArt "/tmp/aart")
+(defvar mpdProgress 0)
+(defvar showMPD false)
+(defvar showSeek false)
+(defvar playIcon "")
+(defpoll getMPD :interval "1s" "python scripts/mpdInfo.py")
+
+; window title
+(defwidget wintitle []
+  (box :class "wintitle" 
+       :orientation "h"
+       :halign "start"
+    winvar))
+(deflisten winvar `python scripts/windowTitle.py`)
+
+; backup status
+(defwidget backup []
+  (eventbox
+    :onhover "eww update showBackup=true"
+    :onhoverlost "eww update showBackup=false"
+    (box
+      :orientation "h"
+      :space-evenly "false"
+      (revealer :transition "slideleft"
+        :duration "500ms"
+        :reveal showBackup
+        (button :class "backup-details" "Backup in progress "))
+      (button :class "backup-icon" backupStatus)
+
+      ;(circular-progress :value 
+      ;  :start-at 0 
+      ;  :clockwise true )
+      )))
+(defpoll backupStatus :interval "15s" "python scripts/backupStatus.py")
+(defvar showBackup false)
+
+; volume slider
+(defwidget volume []
+	(eventbox 
+              :onhover "eww update showVolume=true" 		
+			  :onhoverlost "eww update showVolume=false"
+	(box      :orientation "h" 	  
+			  :space-evenly "false" 
+	(revealer :transition "slideleft"
+              :duration "500ms"
+			  :reveal showVolume
+	(scale    :class "volume-slider" 	  
+			  :value curVolume
+			  :orientation "h"      
+			  :flipped true 
+			  :tooltip "Volume: ${curVolume}%" 
+			  :max 101 
+			  :min 0 
+			  :onchange "pactl set-sink-volume @DEFAULT_SINK@ {}%" ))
+	(button   :onclick "pactl set-sink-mute @DEFAULT_SINK@ toggle"   :class "volume-icon volume-icon-${muted}" "墳 ")
+      )))
+(defvar showVolume false)
+(defpoll muted :interval "1s" "pactl get-sink-mute @DEFAULT_SINK@ | cut -c 7-")
+(defpoll curVolume :interval "1s" "pactl get-sink-volume @DEFAULT_SINK@ | awk '{print $5}' | tr -d '%'")
+
+; brightness slider
+(defwidget brightness []
+	(eventbox 
+              :onhover "eww update showBrightness=true" 		
+			  :onhoverlost "eww update showBrightness=false"
+	(box      :orientation "h" 	  
+			  :space-evenly "false" 
+	(revealer :transition "slideleft"
+              :duration "500ms"
+			  :reveal showBrightness
+	(scale    :class "brightness-slider" 	  
+			  :value curBrightness
+			  :orientation "h"      
+			  :flipped true 
+			  :tooltip "Brightness: ${curBrightness}%" 
+			  :max 101 
+			  :min 0 
+			  :onchange "light -S {}" ))
+	(button  :class "brightness-icon" ""))))
+(defvar showBrightness false)
+(defpoll curBrightness :interval "1s" "light | tr -d '.00'")
+
+; wifi menu
+(defwidget wifi []
+  (button :class "wifi"
+    :orientation "h"
+    :onclick `scripts/rofi-wifi-menu.sh`
+    :tooltip wifistrength 
+  wifivar))
+(defpoll wifivar :interval "5s" "python scripts/wifi.py") 
+(defpoll wifistrength :interval "1m" "python scripts/wifiDetails.py") 
+
+; bluetooth menu
+(defwidget bluetooth []
+  (button :class "bluetooth"
+    ;:onclick `eww open blth -c $HOME/.config/eww/blth`
+    ;:tooltip btStatus
+  "B"))
+(defvar btEnabled false)
+
+; time & date
+(defwidget clock []
+    (eventbox 
+              :onhover "eww update showDate=true" 		
+			  :onhoverlost "eww update showDate=false"
+	(box      :orientation "h" 	  
+              :class "clock"
+			  :space-evenly "false" time
+	(revealer :transition "slideright"
+              :duration "500ms"
+			  :reveal showDate
+	(button   :class "date-slider" 	  
+			  :orientation "h"
+      date))
+	)))
+(defpoll time :interval "5s" "date '+%-I:%M'")
+(defpoll date :interval "1m" "date '+%b %d, %Y'")
+(defvar showDate false)
+
+(defwidget battery []
+  (box :orientation "h"
+    :width "30px"
+    :halign "end"
+    :tooltip battime
+  batvar))
+(defpoll batvar :interval "15s" `python scripts/battery.py`)
+(defpoll battime :interval "1m" `python scripts/battery.py time`)
+
+(defwindow grss 
+            :geometry (geometry :x "0"
+                                :y "0"
+                                :height "36px"
+                                :width "100%"
+                                :anchor "top center")
+  :reserve (struts :distance "40px" :side "top")
+  :windowtype "dock"
+  :stacking "fg"
+  :wm-ignore false
+  :exclusive true
+  :monitor 0
+  (bar))
+

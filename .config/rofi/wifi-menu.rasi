@@ -1,0 +1,41 @@
+
+@theme "gruvbox-dark-soft"
+
+configuration {
+    font: "CozetteVector 11.75";
+    click-to-exit: true;
+}
+
+window {
+    padding:          10;
+    height:           30%;
+    width:            23%;
+    location:         north east;
+    anchor:           north east;
+    x-offset:         -7.5px;
+    y-offset:         7.5px;
+    border-radius:    2px ;
+    border:           2px ;
+    children: [listview];
+}
+mainbox {
+    horizontal-align:   0.5;
+    padding:      0;
+    border-color: var(ac);
+    border:       0px ;
+    children:     [ inputbar,listview ];
+}
+element {
+    border-radius: 2.5px;
+}
+element-text {
+    horizontal-align: 0.5;
+}
+listview {
+    fixed-height: 0;
+    padding:      5px ;
+    scrollbar:    false;
+    dynamic:      true;
+    spacing:      4px ;
+    border:       0px ;
+}
