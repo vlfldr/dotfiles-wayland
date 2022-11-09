@@ -33,8 +33,9 @@ with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as client:
         
         for e in events:
             es = e.split('>>')
-            if es == ['']:
+            if es == [''] or len(es) == 1:
                 continue
+
             eType, eData = es[0], es[1].strip()
         
             # workspace change
@@ -63,6 +64,9 @@ with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as client:
             # on switch away from empty workspace
             elif eType == 'destroyworkspace':
                 os.system(f'eww update ws{eData}=inactive')
+
+            elif eType in ['openwindow', 'closewindow', 'openlayer', 'closelayer']:
+                continue
 
             else:
                 print('Unhandled type: ' + eType + ' :: ' + eData)

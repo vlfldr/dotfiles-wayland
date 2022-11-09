@@ -55,11 +55,11 @@ $faded_orange   :#af3a03;
 }
 
 .container {
-    background-color: $dark0;
+    background-color: $dark1;
     border-radius: 2px;
-    margin: 5px;
+    margin: 10px;   // remember - margins in empty space
     min-height: 32px;
-    border: 1px solid $light3;
+    border: 2px solid $light3;
     padding: 0 10px;
 }
 
@@ -95,7 +95,7 @@ $faded_orange   :#af3a03;
 
 image {
     border-radius: 2px;
-    border-left: 1px solid $light3;
+    border-left: 2px solid $light3;
     padding: 0;
 }
 

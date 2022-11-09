@@ -1,7 +1,8 @@
 configuration {
-    font:   "CozetteVector 11.75";
+    font:   "CozetteVector 11";
     combi-hide-mode-prefix: true;
     display-drun: "";
+    drun-display-format: "{name}";
     tokenize: false;
     terminal: "alacritty";
     click-to-exit: true;
@@ -10,26 +11,28 @@ configuration {
 @theme "gruvbox-dark-soft"
 
 * {
-    bg: #534F4EFF;
-    border: #EBDBB2FF;
-    background-color: #00000000;
-    transparency: "real";
-    opacity: 75%;
+    margin: 0;
+    padding: 0;
+    border: #BDAE93;
+    background-color: #3c3836;
 }
 
 window {
     border: 2px;
     border-color: @border;
-    padding: 10;
-    width: 30%;
+    location: north west;
+    padding: 0;
+    x-offset: 399px;
+    y-offset: 10px;
+    width: 260px;
     border-radius: 2px;
 }
 
 listview {
     highlight: none;
     border: 0px;
+    spacing: 0;
     lines: 7;
-    spacing: 5px;
     scrollbar: false;
 }
 inputbar {
@@ -40,7 +43,9 @@ inputbar {
 
 entry {
     horizontal-align: 0.5;
+    padding: 5px 0px 1px 0px;
 }
+
 textbox-prompt-sep {
     expand:     false;
     str:        "";
@@ -48,12 +53,10 @@ textbox-prompt-sep {
 }
 
 element {
-    border: 0px;
     border-radius: 2.5px;
-    padding: 5px;
 }
 
 element-text {
-    horizontal-align: 0.5;
+   horizontal-align: 0.5;
 }
 
