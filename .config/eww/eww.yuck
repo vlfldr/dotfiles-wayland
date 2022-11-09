@@ -1,24 +1,13 @@
 ; vlfldr's eww bar
 ; https://github.com/vlfldr
 
-; parent container
-(defwidget bar []
-  (centerbox :orientation "h"
-    :space-evenly false
-    (left-widgets)
-    (wintitle)
-    (tray)
-))
-
-; workspaces & MPD
-; both separate containers
-(defwidget left-widgets []
-  (box :orientation "h"
-    :space-evenly false
-    :halign "start"
-    (hyprland)
-    (mpd)
-))
+; workspace data
+(defvar ws1 "current")
+(defvar ws2 "inactive")
+(defvar ws3 "inactive")
+(defvar ws4 "inactive")
+(defvar ws5 "inactive")
+(defvar ws6 "inactive")
 
 ; right tray
 (defwidget tray []
@@ -37,8 +26,16 @@
 
 ; hyprland workspaces
 (defwidget hyprland [] 
-  (literal :content hyprvar))
-(deflisten hyprvar `python scripts/hypr.py`)
+  (box  :class "hyprland container" 
+        :valign "center" 
+        :halign "start" 
+        :spacing 5  
+    (button :onclick "hyprctl dispatch workspace 1 " :class ws1  "") 
+    (button :onclick "hyprctl dispatch workspace 2 " :class ws2  "") 
+    (button :onclick "hyprctl dispatch workspace 3 " :class ws3  "") 
+    (button :onclick "hyprctl dispatch workspace 4 " :class ws4  "") 
+    (button :onclick "hyprctl dispatch workspace 5 " :class ws5  "♫") 
+    (button :onclick "hyprctl dispatch workspace 6 " :class ws6  "◇")))
 
 ; mpd control
 (defwidget mpd []
@@ -75,11 +72,12 @@
 
 ; window title
 (defwidget wintitle []
-  (box :class "wintitle" 
+  (box :class "wintitle container" 
        :orientation "h"
+       :width 400
        :halign "start"
     winvar))
-(deflisten winvar `python scripts/windowTitle.py`)
+(defvar winvar "~")
 
 ; backup status
 (defwidget backup []
@@ -208,3 +206,54 @@
   :monitor 0
   (bar))
 
+; window title - far left
+(defwindow w_wintitle
+  :geometry (geometry :x "0"
+                      :y "0"
+                      :width "1000px"
+                      :height "32px"
+                      :anchor "top left")
+  :windowtype "dock"
+  :stacking "fg"
+  :wm-ignore false
+  :monitor 0
+(wintitle))
+
+; workspaces - center
+(defwindow w_workspaces
+  :geometry (geometry :x "0"
+                      :y "0"
+                      :width "0px"
+                      :height "32px"
+                      :anchor "top center")
+  :windowtype "dock"
+  :stacking "fg"
+  :wm-ignore false
+  :monitor 0
+(hyprland))
+
+; music - right center
+(defwindow w_music
+  :geometry (geometry :x "60%"
+                      :y "0"
+                      :width "0px"
+                      :height "32px"
+                      )
+  :windowtype "dock"
+  :stacking "fg"
+  :wm-ignore false
+  :monitor 0
+(mpd))
+
+; tray - far right
+(defwindow w_tray
+  :geometry (geometry :x "0"
+                      :y "0"
+                      :width "0px"
+                      :height "32px"
+                      :anchor "top right")
+  :windowtype "dock"
+  :stacking "fg"
+  :wm-ignore false
+  :monitor 0
+(tray))

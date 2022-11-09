@@ -2,50 +2,32 @@ import socket
 import os
 import time
 
-# workspace config
-workspaces = {
-    1: ['', 'active'],
-    2: ['', 'active'],
-    3: ['', 'inactive'],
-    4: ['', 'inactive'],
-    5: ['♫', 'inactive'],
-    6: ['◇', 'inactive'],
+# hypr.py - to be run constantly in background
+# connects to hyprland socket, updates eww vars based on received events
+# github.com/vlfldr
+
+# window title replacement rules
+replacementRules = {
+    ' — Firefox Nightly': '',
 }
 
-def getWorkspaceStatus(curWorkspaceID):
-    for ws in workspaces:
-        workspaces[ws][1] = 'inactive'
+def applyRules(winTitle):
+    for r in replacementRules:
+        winTitle = winTitle.replace(r, replacementRules[r])
 
-    # read from hyperctl. must wait a couple ms for accurate workspace data
-    time.sleep(.015)
-    for ws in os.popen('hyprctl workspaces').read().split('workspace ID ')[1:7]:
-        workspaces[ int(ws[0]) ][1] = 'active' 
-        print(ws)
-    # construct widget string
-    widgetStr = '(box :class \"hyprland container\" :valign \"center\" :halign \"start\" :spacing 5 '
+    return winTitle
 
-    for ws in workspaces:
-        wsLabel, wsClass = workspaces[ws][0], workspaces[ws][1]
-        if ws == int(curWorkspaceID):
-            wsClass = 'current'
-        widgetStr += f" (button :onclick \"hyprctl dispatch workspace {ws} \" :class \"{wsClass}\" \"{wsLabel}\")"
-
-    widgetStr += ')'
-
-    return widgetStr
-
-# initialization
-print( getWorkspaceStatus("1"), flush=True)
-
-# get hyprland socket ID
+# hyprland socket ID
 hid = os.environ['HYPRLAND_INSTANCE_SIGNATURE']
+
+# last active workspace
+prevActive = "1"
 
 # listen for events
 with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as client:
     client.connect('/tmp/hypr/' + hid + '/.socket2.sock')
 
     while True:
-
         rawData = str( client.recv(1024), 'UTF-8' )
         events = rawData.split('\n')
         
@@ -53,16 +35,34 @@ with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as client:
             es = e.split('>>')
             if es == ['']:
                 continue
-            eType, eData = es[0], es[1]
+            eType, eData = es[0], es[1].strip()
         
             # workspace change
             if eType == 'workspace':
-                widgetStr = getWorkspaceStatus( eData )
+                os.system(f'eww update ws{eData}=current')
+                os.system(f'eww update ws{prevActive}=active')
 
-                # output widget literal for eww listener
-                print(widgetStr, flush=True)
+                prevActive = eData
 
-            elif eType in ('activewindow', 'createworkspace', 'destroyworkspace'):
-                continue
+            # window focus change
+            elif eType == 'activewindow':
+                # empty workspace
+                if eData == ',':
+                    os.system('eww update winvar=\"\"')
+                    continue
+
+                spl = eData.split(',')
+                winClass, winTitle = spl[0], applyRules(spl[1])
+                
+                os.system(f'eww update winvar=\"{winTitle}\"')
+
+            # on new workspace created (handled in workspace change)
+            elif eType == 'createworkspace':
+                print()
+            
+            # on switch away from empty workspace
+            elif eType == 'destroyworkspace':
+                os.system(f'eww update ws{eData}=inactive')
+
             else:
                 print('Unhandled type: ' + eType + ' :: ' + eData)

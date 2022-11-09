@@ -44,8 +44,12 @@ $faded_purple   :#8f3f71;
 $faded_aqua     :#427b58;
 $faded_orange   :#af3a03;
 
-.grss {
-    background-color: $dark1;
+.grss,
+.w_wintitle,
+.w_workspaces,
+.w_music,
+.w_tray {
+    background-color: transparent;
     color: $light1;    
     font-size: 14px;
 }
@@ -53,7 +57,7 @@ $faded_orange   :#af3a03;
 .container {
     background-color: $dark0;
     border-radius: 2px;
-    margin: 4px;
+    margin: 5px;
     min-height: 32px;
     border: 1px solid $light3;
     padding: 0 10px;
