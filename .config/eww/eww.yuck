@@ -54,8 +54,64 @@
 (tray))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;; POPUP WINDOWS ;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+; bluetooth popup menu
+(defwindow w_bluetooth
+  :geometry (geometry :x "0"
+                      :y "0"
+                      :width "0px"
+                      :height "32px"
+                      :anchor "top right")
+  :windowtype "normal"
+  :stacking "fg"
+  :wm-ignore false
+  :monitor 0
+(p_bluetooth))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;; WIDGETS ;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+; right tray
+(defwidget tray []
+  (box :orientation "h"
+    :space-evenly false
+    :spacing 15
+    :class "container tray"
+    :halign "end"
+    (bluetooth)
+    (brightness)
+    (volume)
+    (wifi)
+    (battery)
+    (clock)
+))
+
+; bluetooth popup menu widget
+(defwidget p_bluetooth []
+  (box :class "popup bluetooth-popup"
+       :orientation "v"
+       :width 300
+       ;:height 300
+       :space-evenly false
+       :halign "end"
+       (button :class "bluetooth-button"
+               :onclick "python scripts/bluetooth.py toggle"
+               {btEnabled ? "Turn Bluetooth Off" : "Turn Bluetooth On"})
+       (revealer :transition "slidedown" :duration "500ms" :reveal {btEnabled}
+        (box :space-evenly false :orientation "v"
+          (button "I'm a thing!")      
+))))
+
+; bluetooth tray icon
+(defwidget bluetooth []
+  (button :class "bluetooth"
+    :onclick "eww open w_bluetooth"
+    ;:tooltip btStatus
+  "B"))
+(defvar btEnabled false)
 
 ; window title
 (defwidget wintitle []
@@ -120,21 +176,6 @@
 (defvar showSeek false)
 (defvar playIcon "")
 (defpoll getMPD :interval "1s" "python scripts/mpdInfo.py")
-
-; right tray
-(defwidget tray []
-  (box :orientation "h"
-    :space-evenly false
-    :spacing 15
-    :class "container"
-    :halign "end"
-    ;(bluetooth)
-    (brightness)
-    (volume)
-    (wifi)
-    (battery)
-    (clock)
-))
 
 ; backup status
 (defwidget backup []
@@ -213,13 +254,6 @@
 (defpoll wifivar :interval "5s" "python scripts/wifi.py") 
 (defpoll wifistrength :interval "1m" "python scripts/wifiDetails.py") 
 
-; bluetooth menu
-(defwidget bluetooth []
-  (button :class "bluetooth"
-    ;:onclick `eww open blth -c $HOME/.config/eww/blth`
-    ;:tooltip btStatus
-  "B"))
-(defvar btEnabled false)
 
 ; time & date
 (defwidget clock []

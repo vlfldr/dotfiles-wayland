@@ -1,6 +1,5 @@
 import socket
 import os
-import time
 
 # hypr.py - to be run constantly in background
 # connects to hyprland socket, updates eww vars based on received events
@@ -11,11 +10,13 @@ replacementRules = {
     ' — Firefox Nightly': '',
 }
 
+
 def applyRules(winTitle):
     for r in replacementRules:
         winTitle = winTitle.replace(r, replacementRules[r])
 
     return winTitle
+
 
 # hyprland socket ID
 hid = os.environ['HYPRLAND_INSTANCE_SIGNATURE']
@@ -28,16 +29,16 @@ with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as client:
     client.connect('/tmp/hypr/' + hid + '/.socket2.sock')
 
     while True:
-        rawData = str( client.recv(1024), 'UTF-8' )
+        rawData = str(client.recv(1024), 'UTF-8')
         events = rawData.split('\n')
-        
+
         for e in events:
             es = e.split('>>')
             if es == [''] or len(es) == 1:
                 continue
 
             eType, eData = es[0], es[1].strip()
-        
+
             # workspace change
             if eType == 'workspace':
                 os.system(f'eww update ws{eData}=current')
@@ -53,7 +54,13 @@ with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as client:
                     continue
 
                 spl = eData.split(',')
-                winClass, winTitle = spl[0], applyRules(spl[1])
+                if len(spl) == 1:
+                    continue
+
+                winClass, winTitle = spl[0], applyRules(spl[1]) # apply rules
+                winTitle = winTitle.replace("`", "")    # sanitize
+                if len(winTitle) > 86:
+                    winTitle = winTitle[:86] + '...'    # max length
                 
                 os.system(f'eww update winvar=\"{winTitle}\"')
 

@@ -6,6 +6,7 @@ configuration {
     tokenize: false;
     terminal: "alacritty";
     click-to-exit: true;
+    fixed-num-lines: false;
 }
 
 @theme "gruvbox-dark-soft"
@@ -30,6 +31,7 @@ window {
 
 listview {
     highlight: none;
+    dynamic: true;
     border: 0px;
     spacing: 0;
     lines: 7;
@@ -43,7 +45,11 @@ inputbar {
 
 entry {
     horizontal-align: 0.5;
-    padding: 5px 0px 1px 0px;
+    border-color: @border;
+    border-radius: 2px;
+    margin: -2px;
+    padding: 10px 1px 6px 1px;
+    border: 0 0 3px 0;
 }
 
 textbox-prompt-sep {
@@ -53,10 +59,19 @@ textbox-prompt-sep {
 }
 
 element {
+    padding: 5px;
+    margin: 1px 5px;
     border-radius: 2.5px;
 }
 
+element.alternate.normal,
+element.normal.normal {
+    background-color: @background-color;
+    padding: 5px;
+}
+
 element-text {
+    highlight: none;
    horizontal-align: 0.5;
 }
 

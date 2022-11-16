@@ -4,6 +4,7 @@
 }
 
 // gruvbox colors
+$shadow         :rgba(60, 56, 54, 0.5);
 $dark0_hard     :#1d2021;
 $dark0          :#282828;
 $dark0_soft     :#32302f;
@@ -48,10 +49,16 @@ $faded_orange   :#af3a03;
 .w_wintitle,
 .w_workspaces,
 .w_music,
-.w_tray {
+.w_tray,
+.w_bluetooth {
     background-color: transparent;
     color: $light1;    
-    font-size: 14px;
+    font-size: 14px;   
+}
+
+.bluetooth-button {
+    background-color: $dark0_soft;
+    padding: 3px;
 }
 
 .container {
@@ -61,6 +68,21 @@ $faded_orange   :#af3a03;
     min-height: 32px;
     border: 2px solid $light3;
     padding: 0 10px;
+    box-shadow: 3px 3px 2px $shadow;
+}
+
+.popup {
+    background-color: $dark1;
+    border-radius: 2px;
+    margin: 11px;   // remember - margins in empty space
+    margin-top: 55px;
+    padding: 10px;
+    border: 2px solid $light3;
+    box-shadow: 3px 3px 2px $shadow;
+}
+
+.tray {
+    margin-right: 11px; // unsure why this is needed
 }
 
 .mpd-info {
@@ -101,7 +123,7 @@ image {
 
 .hyprland {
     color: $dark3;
-    font-size: 23px;
+    font-size: 24px;
     padding: 0 5px 0 3px;
     
     // padding between workspace icons
@@ -111,7 +133,7 @@ image {
         // pixel-perfect workspace alignment
         &:first-child,
         &:nth-child(5) {
-            margin-top: 1px;
+            margin-top: 2px;
         }
     }
     .active { color: $light2; }
@@ -185,7 +207,8 @@ scale trough {
 
 tooltip {
     background-color: $dark1;
-    border-radius: 5px;
+    border-radius: 2px;
     border: 1px solid $light2;
-    margin-right: 5px;
+    color: $light1;
+    font-size: 12px;
 }
