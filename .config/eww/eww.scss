@@ -71,20 +71,31 @@ $faded_orange   :#af3a03;
     padding: 10px;
 }
 
+.volume-popup,
+.brightness-popup {
+    min-height: 0;
+    margin: 0;
+    padding: 5px;
+
+    // vertical sliders
+    scale trough {
+        all: unset;
+        background-color: $dark1;
+        border-radius: 2px;
+        min-height: 100px;
+      }
+}
+
 // sliders
 scale trough {
   all: unset;
   background-color: $dark1;
   border-radius: 2px;
-  border: 1px solid $light2;
   min-width: 100px;
+  border: 1px solid $light1;
   margin: 10px;
   margin-left: 0;
 }
-
-
-//// WINDOW TITLE ////
-// .wintitle {}
 
 
 //// WORKSPACES ////
@@ -123,6 +134,7 @@ scale trough {
 // playing/paused icon
 .mpd-label-icon {
     font-size: 23px;
+    margin: -2px;   // don't touch! pixel-perfect spacing
     color: $neutral_blue;
 }
 
@@ -155,6 +167,21 @@ image {
 //// TRAY ////
 .tray {
     margin-right: 11px; // unsure why this is needed
+    padding-left: 0px;
+}
+
+.tray-icon {
+    min-width: 27px;
+}
+
+.wifi-icon {
+    min-width: 12px;
+    margin-left: -1px;
+}
+
+.battery-icon {
+    margin-left: 1px;
+    margin-right: 2px;
 }
 
 //// BLUETOOTH ////
@@ -183,8 +210,6 @@ image {
 
 //// VOLUME ////
 .volume-icon {
-    margin-right: -6px;
-
     // &-no { }
 
     &-yes {

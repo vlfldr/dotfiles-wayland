@@ -6,8 +6,12 @@ raw = os.popen("mpc").read().split('\n')
 nowPlaying = raw[0]
 progress = raw[1]
 
-if len(nowPlaying) > 40:
-    nowPlaying = nowPlaying[:40] + '...'
+if len(nowPlaying) > 51:
+    nowPlaying = nowPlaying[:51] + '...'
+    os.system('eww update musicPosition=10')
+else:
+    leftMargin = 140 - (len(nowPlaying) * 1.2)
+    os.system('eww update musicPosition=' + str(leftMargin))
 
 intProgress = progress[progress.find(' (') + 2:-2]
 
