@@ -158,9 +158,12 @@ scale trough {
 
 // album art
 image {
-    border-radius: 2px;
     border-left: 2px solid $light3;
     padding: 0;
+}
+
+.now-playing-image {
+    border: none;
 }
 
 

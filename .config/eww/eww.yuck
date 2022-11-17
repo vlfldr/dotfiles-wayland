@@ -53,6 +53,19 @@
   :monitor 0
 (tray))
 
+; popup bluetooth menu
+(defwindow w_bluetooth
+  :geometry (geometry :x "0"
+                      :y "0"
+                      :width "0px"
+                      :height "32px"
+                      :anchor "top right")
+  :windowtype "normal"
+  :stacking "fg"
+  :wm-ignore false
+  :monitor 0
+(p_bluetooth))
+
 ; popup volume slider
 (defwindow w_volume
   :geometry (geometry :x "105px"
@@ -74,6 +87,17 @@
   :wm-ignore false
   :monitor 0
 (p_brightness))
+
+; popup now playing
+(defwindow w_nowplaying
+  :geometry (geometry :x "0px"
+                      :y "52px"
+                      :anchor "top right")
+  :windowtype "dock"
+  :stacking "fg"
+  :wm-ignore false
+  :monitor 0
+(p_nowplaying))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;; POPUP WINDOWS ;;;;;;;;;;
@@ -113,18 +137,15 @@
           :onchange "light -S {}"   
 )))))
 
-; bluetooth menu
-(defwindow w_bluetooth
-  :geometry (geometry :x "0"
-                      :y "0"
-                      :width "0px"
-                      :height "32px"
-                      :anchor "top right")
-  :windowtype "normal"
-  :stacking "fg"
-  :wm-ignore false
-  :monitor 0
-(p_bluetooth))
+; now playing notification
+(defwidget p_nowplaying []
+  (revealer :transition "slideleft" :duration "500ms" :reveal showNowPlaying
+  (box :class "popup now-playing-popup"
+    songInfo
+    (image :class "now-playing-image"
+      :path albumArt :image-width 128 :image-height 128)
+)))
+(defvar showNowPlaying false)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;; WIDGETS ;;;;;;;;;;;;;
@@ -206,14 +227,15 @@
       (eventbox
         :onhover "eww update showSeek=true" 
         :onhoverlost "eww update showSeek=false" 
-    (box :style "margin-left: ${musicPosition}px" :class "container mpd-container" 
+    (box :style "margin-left: ${musicPosition}px" 
+         :class "container mpd-container" 
          :space-evenly false 
          :spacing 0
          :orientation "v"
       (revealer :transition "slidedown" :duration "500ms" :reveal {!showSeek}
       (box :space-evenly false :spacing 10 
       (button :onclick "mpc toggle" :class "mpd-label-icon" playIcon) 
-      (button :onclick "hyprctl dispatch workspace 5" :class "mpd-info" getMPD)
+      (button :onclick "hyprctl dispatch workspace 5" :class "mpd-info" songInfo)
     (image :path albumArt :image-width 32 :image-height 32)))
         (revealer :transition "slidedown"
           :duration "500ms"
@@ -230,7 +252,7 @@
 (defvar showSeek false)
 (defvar playIcon "")
 (defvar musicPosition 10)
-(defpoll getMPD :interval "1s" "python scripts/mpdInfo.py")
+(defpoll songInfo :interval "1s" "python scripts/mpdInfo.py")
 
 ; backup status
 (defwidget backup []
@@ -256,7 +278,7 @@
 ; volume icon
 (defwidget volume []
 	(eventbox :onhover "eww update showVolume=true"
-  :onhoverlost "eww update showVolumeTimer=1"
+  :onhoverlost "eww update closeVolumeTimer=1"
     (button   :onclick "pactl set-sink-mute @DEFAULT_SINK@ toggle"   
       :class "tray-icon volume-icon volume-icon-${muted}" "墳 ")))
 (defvar showVolume false)

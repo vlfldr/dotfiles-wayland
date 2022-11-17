@@ -16,9 +16,6 @@ else:
     isMuted = 'yes' in os.popen('pactl get-sink-mute @DEFAULT_SINK@').read()
     os.system('pactl set-sink-mute @DEFAULT_SINK@ ' + str(not isMuted).lower())
 
-# dunst muted popup
-#if sys.argv[1] == 'mute' and not isMuted:
-#    os.system('dunstify \'Muted 婢\' -r 001')
-
+# show eww volume bar
 os.system('eww update showVolume=true')
 os.system('eww update closeVolumeTimer=2')
