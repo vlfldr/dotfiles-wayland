@@ -41,8 +41,8 @@ with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as client:
 
             # workspace change
             if eType == 'workspace':
-                os.system(f'eww update ws{eData}=current')
-                os.system(f'eww update ws{prevActive}=active')
+                os.system(f'eww update ws{eData}=ws_current')
+                os.system(f'eww update ws{prevActive}=ws_active')
 
                 prevActive = eData
 
@@ -70,7 +70,7 @@ with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as client:
             
             # on switch away from empty workspace
             elif eType == 'destroyworkspace':
-                os.system(f'eww update ws{eData}=inactive')
+                os.system(f'eww update ws{eData}=ws_inactive')
 
             elif eType in ['openwindow', 'closewindow', 'openlayer', 'closelayer']:
                 continue

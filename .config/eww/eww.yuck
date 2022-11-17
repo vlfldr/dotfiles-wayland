@@ -82,6 +82,7 @@
     :class "container tray"
     :halign "end"
     (bluetooth)
+    (bluetooth)
     (brightness)
     (volume)
     (wifi)
@@ -108,7 +109,7 @@
 ; bluetooth tray icon
 (defwidget bluetooth []
   (button :class "bluetooth"
-    :onclick "eww open w_bluetooth"
+    :onclick "eww open --toggle w_bluetooth"
     ;:tooltip btStatus
   "B"))
 (defvar btEnabled false)
@@ -123,26 +124,25 @@
 (defvar winvar "~")
 
 ; workspace data
-(defvar ws1 "current")
-(defvar ws2 "inactive")
-(defvar ws3 "inactive")
-(defvar ws4 "inactive")
-(defvar ws5 "inactive")
-(defvar ws6 "inactive")
+(defvar ws1 "ws_current")
+(defvar ws2 "ws_inactive")
+(defvar ws3 "ws_inactive")
+(defvar ws4 "ws_inactive")
+(defvar ws5 "ws_inactive")
+(defvar ws6 "ws_inactive")
 
 ; hyprland workspaces
 (defwidget hyprland [] 
+  (eventbox
   (box  :class "hyprland container" 
-        :valign "center" 
-        :halign "start" 
         :spacing 5  
-    (button :onclick "hyprctl dispatch workspace 1 " :class ws1  "") 
-    (button :onclick "hyprctl dispatch workspace 2 " :class ws2  "") 
-    (button :onclick "hyprctl dispatch workspace 3 " :class ws3  "") 
-    (button :onclick "hyprctl dispatch workspace 4 " :class ws4  "") 
-    (button :onclick "hyprctl dispatch workspace 5 " :class ws5  "♫") 
-    (button :onclick "hyprctl dispatch workspace 6 " :class ws6  "◇")
-))
+    (button :onclick "hyprctl dispatch workspace 1" :class ws1  "") 
+    (button :onclick "hyprctl dispatch workspace 2" :class ws2  "") 
+    (button :onclick "hyprctl dispatch workspace 3" :class ws3  "") 
+    (button :onclick "hyprctl dispatch workspace 4" :class ws4  "") 
+    (button :onclick "hyprctl dispatch workspace 5" :class ws5  "♫") 
+    (button :onclick "hyprctl dispatch workspace 6" :class ws6  "◇")
+)))
 
 ; mpd control
 (defwidget mpd []

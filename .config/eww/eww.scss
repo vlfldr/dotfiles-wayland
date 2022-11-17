@@ -1,9 +1,8 @@
-* {
-    all: unset;
-    font-family: 'CozetteVector';
-}
+/* VLFLDR's eww bar
+    github.com/vlfldr */
 
-// gruvbox colors
+
+//// GRUVBOX COLORS ////
 $shadow         :rgba(60, 56, 54, 0.5);
 $dark0_hard     :#1d2021;
 $dark0          :#282828;
@@ -45,23 +44,17 @@ $faded_purple   :#8f3f71;
 $faded_aqua     :#427b58;
 $faded_orange   :#af3a03;
 
-.grss,
-.w_wintitle,
-.w_workspaces,
-.w_music,
-.w_tray,
-.w_bluetooth {
-    background-color: transparent;
+//// GLOBAL STYLES ////
+* {
+    all: unset;
+    font-family: 'CozetteVector';
+}
+
+// statusbar windows
+.container,
+.popup {
     color: $light1;    
-    font-size: 14px;   
-}
-
-.bluetooth-button {
-    background-color: $dark0_soft;
-    padding: 3px;
-}
-
-.container {
+    font-size: 14px; 
     background-color: $dark1;
     border-radius: 2px;
     margin: 10px;   // remember - margins in empty space
@@ -71,20 +64,54 @@ $faded_orange   :#af3a03;
     box-shadow: 3px 3px 2px $shadow;
 }
 
+// popup windows
 .popup {
-    background-color: $dark1;
-    border-radius: 2px;
-    margin: 11px;   // remember - margins in empty space
+    margin: 11px; 
     margin-top: 55px;
     padding: 10px;
-    border: 2px solid $light3;
-    box-shadow: 3px 3px 2px $shadow;
 }
 
-.tray {
-    margin-right: 11px; // unsure why this is needed
+// sliders
+scale trough {
+  all: unset;
+  background-color: $dark1;
+  border-radius: 2px;
+  border: 1px solid $light2;
+  min-width: 100px;
+  margin: 10px;
+  margin-left: 0;
 }
 
+
+//// WINDOW TITLE ////
+// .wintitle {}
+
+
+//// WORKSPACES ////
+.hyprland {
+    color: $dark3;
+    font-size: 24px;
+    padding: 0 5px 0 3px;
+    
+    // padding between workspace icons
+    & > * {
+        padding: 2.5px 5px;
+
+        // pixel-perfect workspace alignment
+        &:first-child,
+        &:nth-child(5) {
+            margin-top: 2px;
+        }
+    }
+    .ws_active { color: $light2; }
+
+    .ws_inactive { color: $dark3; }
+
+    .ws_current { color: $neutral_yellow; }
+}
+
+
+//// MPD ////
 .mpd-info {
     margin-top: 2px;
 }
@@ -93,11 +120,13 @@ $faded_orange   :#af3a03;
     padding-right: 0;
 }
 
+// playing/paused icon
 .mpd-label-icon {
     font-size: 23px;
     color: $neutral_blue;
 }
 
+// seek bar
 .mpd-slider {
     margin-top: 2px;
 }
@@ -115,54 +144,26 @@ $faded_orange   :#af3a03;
     border-radius: 1px;
 }
 
+// album art
 image {
     border-radius: 2px;
     border-left: 2px solid $light3;
     padding: 0;
 }
 
-.hyprland {
-    color: $dark3;
-    font-size: 24px;
-    padding: 0 5px 0 3px;
-    
-    // padding between workspace icons
-    & > * {
-        padding: 2.5px 5px;
 
-        // pixel-perfect workspace alignment
-        &:first-child,
-        &:nth-child(5) {
-            margin-top: 2px;
-        }
-    }
-    .active { color: $light2; }
-
-    .inactive { color: $dark3; }
-
-    .current { color: $neutral_yellow; }
+//// TRAY ////
+.tray {
+    margin-right: 11px; // unsure why this is needed
 }
 
-scale trough {
-  all: unset;
-  background-color: $dark1;
-  border-radius: 2px;
-  //min-height: 10px;
-  border: 1px solid $light2;
-  min-width: 100px;
-  margin: 10px;
-  margin-left: 0;
+//// BLUETOOTH ////
+.bluetooth-button {
+    background-color: $dark0_soft;
+    padding: 3px;
 }
 
-.volume-icon {
-    margin-right: -6px;
-
-    &-no { }
-    &-yes {
-        color: red;
-    }
-}
-
+//// BRIGHTNESS ////
 .brightness-slider trough {
     border-radius: 2px;
 
@@ -180,10 +181,20 @@ scale trough {
     }
 }
 
+//// VOLUME ////
+.volume-icon {
+    margin-right: -6px;
+
+    // &-no { }
+
+    &-yes {
+        color: red;
+    }
+}
 
 .volume-slider trough highlight {
-  background-color: $neutral_aqua;
-  border-radius: 2px;
+    background-color: $neutral_aqua;
+    border-radius: 2px;
 }
 
 .volume-slider trough slider {
@@ -194,9 +205,8 @@ scale trough {
     border-radius: 2px;
 }
 
-.wintitle {
-}
 
+//// TIME & DATE ////
 .date-slider {
     margin-left: 10px;
 }
@@ -205,6 +215,8 @@ scale trough {
     margin-top: 2px;
 }
 
+
+//// HOVER TOOLTIP ////
 tooltip {
     background-color: $dark1;
     border-radius: 2px;
