@@ -18,10 +18,18 @@ if cmd == 'toggle':
         ewwCmd, subCmd = "true", "on"
     os.system('eww update btEnabled=' + ewwCmd)
     os.system('bluetoothctl power ' + subCmd)
+
+    # scan for 10 seconds when BT turned on
+    if subCmd == 'on':
+        time.sleep(2)
+        os.system('bluetoothctl scan on')
+        time.sleep(10)
+        os.system('bluetoothctl scan off')
+
+if cmd == 'list':
+    ewwStr = "(box :orientation 'v' "
+
+    devs = os.popen('bluetoothctl devices').read()
+    print(devs)
     
-if cmd == 'scan':
-    proc = subprocess.Popen(['unbuffer', 'bluetoothctl', 'scan', 'on'], bufsize=0, stdout=subprocess.PIPE)
-    for line in iter(proc.stdout.readline, b''):
-        print(line.decode('utf-8')[:-1]) # [:-1] to cut off newline char
-    proc.stdout.close()
-    proc.wait()
+    

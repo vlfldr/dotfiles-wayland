@@ -183,10 +183,11 @@
 
 ; bluetooth tray icon
 (defwidget bluetooth []
-  (button :class "bluetooth"
+  (button :class "bluetooth-icon tray-icon"
     :onclick "eww open --toggle w_bluetooth"
     ;:tooltip btStatus
-  "B"))
+  ""))
+  ;  (disabled icon if needed)
 (defvar btEnabled false)
 
 ; window title
