@@ -1,6 +1,6 @@
 ; popup volume slider
 (defwindow w_volume
-  :geometry (geometry :x "105px"
+  :geometry (geometry :x "129px"
                       :y "42px"
                       :anchor "top right")
   :windowtype "dock"
@@ -20,7 +20,7 @@
           :orientation "v"     
           :flipped true 
           :tooltip "Volume: ${curVolume}%" 
-          :max 101 
+          :max 100 
           :min 0 
           :onchange "pactl set-sink-volume @DEFAULT_SINK@ {}%"   
 )))))
@@ -40,11 +40,9 @@
 (defpoll closeVolumeListener :interval "1s" 
   :run-while showVolume "python scripts/autoClose.py volume")
 
-
-
 ; popup brightness slider
 (defwindow w_brightness
-  :geometry (geometry :x "127px"
+  :geometry (geometry :x "152px"
                       :y "42px"
                       :anchor "top right")
   :windowtype "dock"
@@ -64,8 +62,8 @@
           :orientation "v"     
           :flipped true 
           :tooltip "Brightness: ${curBrightness}%" 
-          :max 101 
-          :min 0 
+          :max 100 
+          :min 0
           :onchange "light -S {}"   
 )))))
 

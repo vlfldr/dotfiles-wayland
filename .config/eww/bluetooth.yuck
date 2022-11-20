@@ -1,7 +1,7 @@
 ; popup bluetooth menu
 (defwindow w_bluetooth
     :geometry (geometry :x "0"
-                        :y "0"
+                        :y "45px"
                         :width "0px"
                         :anchor "top right")
     :windowtype "normal"
@@ -23,7 +23,7 @@
        (revealer :transition "slidedown" :duration "500ms" :reveal {btEnabled}
        (literal :content deviceList) )
 )))
-(defvar showBluetooth true)
+(defvar showBluetooth false)
 (defpoll btEnabled :interval "5m" :initial "python scripts/bt.py status" "python scripts/bt.py status")
 (defpoll deviceList :interval "1s" :run-while showBluetooth "python scripts/bt.py scan")
 
@@ -32,6 +32,5 @@
     (eventbox
     (button :class "bluetooth-icon tray-icon"
       :onclick "eww update showBluetooth=${!showBluetooth}"
-      ;:tooltip btStatus
+      :tooltip {btEnabled ? "Bluetooth Enabled" : "Bluetooth Disabled"}
     {btEnabled ? "" : ""})))
-    ;  (disabled icon if needed)

@@ -19,20 +19,20 @@ if cmd == 'toggle':
         ewwCmd, subCmd = "true", "on"
     os.system('eww update btEnabled=' + ewwCmd)
     # will not scan if turned off
-    os.system('bluetoothctl power ' + subCmd + ' && sleep 2 && bluetoothctl --timeout 45 scan on')
+    os.system('bluetoothctl power ' + subCmd + ' && bluetoothctl discoverable ' + subCmd + ' && bluetoothctl --timeout 45 scan on')
 
 if cmd == 'scan':
     devices = []
     raw = os.popen('bluetoothctl devices').read().split('\n')
+
     if raw == []:
         print('', flush=True)
         sys.exit(0)
 
     for d in raw:
-        d = d.split(' ')
-        if len(d) != 3:
+        if len(d) < 25:
             continue
-        devices += [ {'name': d[2], 'addr': d[1]} ]
+        devices += [ {'addr': d[7:24], 'name': d[25:]} ]
 
     ewwStr = "(eventbox (box :class \"device-list\" :orientation \"v\" " #:spacing \"10\""
 

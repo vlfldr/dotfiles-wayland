@@ -67,7 +67,7 @@ $faded_orange   :#af3a03;
 // popup windows
 .popup {
     margin: 11px; 
-    margin-top: 55px;
+    //margin-top: 55px;
     padding: 10px;
 }
 
@@ -174,7 +174,7 @@ image {
 //// TRAY ////
 .tray {
     margin-right: 11px; // unsure why this is needed
-    padding-left: 0px;
+    padding-left: 3px;
 }
 
 .tray-icon {
@@ -184,6 +184,7 @@ image {
 .wifi-icon {
     min-width: 12px;
     margin-left: -1px;
+    margin-right: 2px;
 }
 
 .battery-icon {
@@ -194,6 +195,12 @@ image {
 //// BLUETOOTH ////
 .bluetooth-popup {
     min-height: 0;
+}
+
+// tray icon
+.bluetooth-icon {
+    min-width: 13px;
+    margin-right: 8px;
 }
 
 // Turn Bluetooth On/Off button
@@ -214,6 +221,10 @@ image {
 }
 
 //// BRIGHTNESS ////
+.brightness-slider {
+    padding-top: 5px;
+}
+
 .brightness-slider trough {
     border-radius: 2px;
 
@@ -240,6 +251,10 @@ image {
     }
 }
 
+.volume-slider {
+    padding-top: 5px;
+}
+
 .volume-slider trough highlight {
     background-color: $neutral_aqua;
     border-radius: 2px;
@@ -256,11 +271,12 @@ image {
 
 //// TIME & DATE ////
 .date-slider {
-    margin-left: 10px;
+    margin-left: 8px;
 }
 
 .clock {
     margin-top: 2px;
+    margin-right: 2px;
 }
 
 

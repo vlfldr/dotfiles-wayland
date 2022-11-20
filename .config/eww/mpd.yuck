@@ -68,9 +68,10 @@
   (box :class "popup now-playing-popup"
     :space-evenly false
     (box :class "now-playing-popup--details"
-      :space-evenly true
+      :space-evenly false
       :spacing 10
       :halign "start"
+      :valign "center"
       :orientation "v"
       (button :halign "start" " ${songInfo.artist}")
       (button :halign "start" "♫ ${songInfo.title}" )

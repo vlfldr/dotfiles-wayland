@@ -50,9 +50,9 @@
     :spacing 0
     :class "container tray"
     :halign "end"
-    (bluetooth)
     (brightness)
     (volume)
+    (bluetooth)
     (wifi)
     (battery)
     (clock)
