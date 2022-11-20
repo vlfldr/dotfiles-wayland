@@ -91,7 +91,7 @@
 ; popup now playing
 (defwindow w_nowplaying
   :geometry (geometry :x "0px"
-                      :y "52px"
+                      ;:y "52px"
                       :anchor "top right")
   :windowtype "dock"
   :stacking "fg"
@@ -141,11 +141,25 @@
 (defwidget p_nowplaying []
   (revealer :transition "slideleft" :duration "500ms" :reveal showNowPlaying
   (box :class "popup now-playing-popup"
-    songInfo
+    :space-evenly false
+    (box :class "now-playing-popup--details"
+      :space-evenly true
+      :spacing 10
+      :halign "start"
+      :orientation "v"
+      (button :halign "start" " ${songInfo.artist}")
+      (button :halign "start" "♫ ${songInfo.title}" )
+      (button :halign "start" " ${songInfo.album}" )
+      (button :halign "start" " ${songInfo.format}")
+    )
     (image :class "now-playing-image"
+      :halign "end"
       :path albumArt :image-width 128 :image-height 128)
 )))
 (defvar showNowPlaying false)
+(defvar closeNowPlayingTimer 0)
+(defpoll closeNowPlayingListener :interval "1s" 
+  :run-while showNowPlaying "python scripts/autoClose.py nowPlaying")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;; WIDGETS ;;;;;;;;;;;;;
@@ -168,6 +182,7 @@
 
 ; bluetooth popup menu widget
 (defwidget p_bluetooth []
+  (revealer :transition "slidedown" :duration "500ms" :reveal showBluetooth
   (box :class "popup bluetooth-popup"
        :orientation "v"
        :width 300
@@ -178,13 +193,15 @@
                {btEnabled ? "Turn Bluetooth Off" : "Turn Bluetooth On"})
        (revealer :transition "slidedown" :duration "500ms" :reveal {btEnabled}
         (box :space-evenly false :orientation "v"
-          (button "<Device List...>")      
-))))
+          deviceList    
+)))))
+(defpoll deviceList :interval "0s" :run-while btEnabled "bluetoothctl scan on")
+(defvar showBluetooth false)
 
 ; bluetooth tray icon
 (defwidget bluetooth []
   (button :class "bluetooth-icon tray-icon"
-    :onclick "eww open --toggle w_bluetooth"
+    :onclick "eww update showBluetooth=true"
     ;:tooltip btStatus
   ""))
   ;  (disabled icon if needed)
@@ -224,7 +241,7 @@
 (defwidget mpd []
   (revealer :transition "slidedown"
     :duration "500ms"
-    :reveal showMPD
+    :reveal showMpd
       (eventbox
         :onhover "eww update showSeek=true" 
         :onhoverlost "eww update showSeek=false" 
@@ -235,8 +252,10 @@
          :orientation "v"
       (revealer :transition "slidedown" :duration "500ms" :reveal {!showSeek}
       (box :space-evenly false :spacing 10 
-      (button :onclick "mpc toggle" :class "mpd-label-icon" playIcon) 
-      (button :onclick "hyprctl dispatch workspace 5" :class "mpd-info" songInfo)
+      (button :onclick "mpc toggle" :class "mpd-label-icon" 
+        {mpdPlaying ? "" : ""}) 
+      (button :onclick "hyprctl dispatch workspace 5" :class "mpd-info" 
+        "${songInfo.artist} - ${songInfo.title}")
     (image :path albumArt :image-width 32 :image-height 32)))
         (revealer :transition "slidedown"
           :duration "500ms"
@@ -248,12 +267,13 @@
               :onchange "mpc seek {}%"))
     ))))
 (defvar albumArt "/tmp/aart")
+(defvar showMpd false)
 (defvar mpdProgress 0)
-(defvar showMPD false)
+(defvar mpdPlaying false)
 (defvar showSeek false)
-(defvar playIcon "")
 (defvar musicPosition 10)
-(defpoll songInfo :interval "1s" "python scripts/mpdInfo.py")
+(defvar songInfo '')
+;(defpoll updateProgress :interval "1s" :run-while mpdPlaying "eww update mpdProgress=${mpdProgress}")
 
 ; backup status
 (defwidget backup []

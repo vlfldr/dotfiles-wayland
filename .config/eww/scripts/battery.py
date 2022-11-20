@@ -63,13 +63,17 @@ batLevel = raw[ raw.find('percentage'): ]
 batLevel = batLevel[ 11:batLevel.find('\n') ].strip()
 
 batTime = raw[ raw.find('time to empty'): ]
-batTime = batTime[ 14:batTime.find('\n') ].strip()
+batTime = batTime[ 14:batTime.find('\n') ].strip() + ' remaining'
+
+if batTime == '':
+    batTime = raw[ raw.find('time to full'): ]
+    batTime = batTime[ 13:batTime.find('\n') ].strip() + ' until full'
 
 #print(batState)
 #print(batTime)
 
 if len(sys.argv) > 1 and sys.argv[1] == 'time':
-    print(f'{batLevel} - {batTime} remaining', flush=True)
+    print(f'{batLevel} - {batTime}', flush=True)
     sys.exit(0)
 
 print( getGlyph(batLevel, batState), flush=True)
