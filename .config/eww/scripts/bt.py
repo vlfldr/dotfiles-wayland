@@ -1,6 +1,7 @@
 import os
 import sys
 import subprocess
+import time
 
 cmd = sys.argv[1]
 
@@ -17,19 +18,28 @@ if cmd == 'toggle':
     if ': no' in status:
         ewwCmd, subCmd = "true", "on"
     os.system('eww update btEnabled=' + ewwCmd)
-    os.system('bluetoothctl power ' + subCmd)
+    # will not scan if turned off
+    os.system('bluetoothctl power ' + subCmd + ' && sleep 2 && bluetoothctl --timeout 45 scan on')
 
-    # scan for 10 seconds when BT turned on
-    if subCmd == 'on':
-        time.sleep(2)
-        os.system('bluetoothctl scan on')
-        time.sleep(10)
-        os.system('bluetoothctl scan off')
+if cmd == 'scan':
+    devices = []
+    raw = os.popen('bluetoothctl devices').read().split('\n')
+    if raw == []:
+        print('', flush=True)
+        sys.exit(0)
 
-if cmd == 'list':
-    ewwStr = "(box :orientation 'v' "
+    for d in raw:
+        d = d.split(' ')
+        if len(d) != 3:
+            continue
+        devices += [ {'name': d[2], 'addr': d[1]} ]
 
-    devs = os.popen('bluetoothctl devices').read()
-    print(devs)
+    ewwStr = "(eventbox (box :class \"device-list\" :orientation \"v\" " #:spacing \"10\""
+
+    for d in devices:
+        ewwStr += "(box :class \"device\" (button :onclick \"bluetoothctl connect " + d['addr'] + "\" \"" + d['name'] + "\")) "
+        
+    ewwStr += "))"
+    print(ewwStr, flush=True    )
     
     

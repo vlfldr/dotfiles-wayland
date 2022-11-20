@@ -18,6 +18,6 @@ if sys.argv[1] == 'up':
 # modify brightness
 os.system(f'light {op} 10')
 
-# show eww brightness bar
+# show eww volume bar
 os.system('eww update showBrightness=true')
 os.system('eww update closeBrightnessTimer=2')

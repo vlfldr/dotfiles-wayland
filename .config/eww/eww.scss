@@ -192,9 +192,25 @@ image {
 }
 
 //// BLUETOOTH ////
+.bluetooth-popup {
+    min-height: 0;
+}
+
+// Turn Bluetooth On/Off button
 .bluetooth-button {
     background-color: $dark0_soft;
-    padding: 3px;
+    min-width: 137px;
+    border-radius: 2px;
+    padding: 5px;
+}
+
+.device-list {
+    margin: 0;
+    padding: 0;
+}
+
+.device {
+    padding: 5px;
 }
 
 //// BRIGHTNESS ////

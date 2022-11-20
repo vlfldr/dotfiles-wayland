@@ -1,0 +1,37 @@
+; popup bluetooth menu
+(defwindow w_bluetooth
+    :geometry (geometry :x "0"
+                        :y "0"
+                        :width "0px"
+                        :anchor "top right")
+    :windowtype "normal"
+    :stacking "fg"
+    :wm-ignore false
+    :monitor 0
+(p_bluetooth))
+
+(defwidget p_bluetooth []
+  (revealer :transition "slidedown" :duration "500ms" :reveal showBluetooth
+  (box :class "popup bluetooth-popup"
+       :orientation "v"
+       :space-evenly false
+       :halign "end"
+       (button :class "bluetooth-button"
+               ; scan will not start from here. works perfectly in terminal. TODO: FIX
+               :onclick "python scripts/bt.py toggle"
+               {btEnabled ? "Turn Bluetooth Off" : "Turn Bluetooth On"})
+       (revealer :transition "slidedown" :duration "500ms" :reveal {btEnabled}
+       (literal :content deviceList) )
+)))
+(defvar showBluetooth true)
+(defpoll btEnabled :interval "5m" :initial "python scripts/bt.py status" "python scripts/bt.py status")
+(defpoll deviceList :interval "1s" :run-while showBluetooth "python scripts/bt.py scan")
+
+; bluetooth tray icon
+(defwidget bluetooth []
+    (eventbox
+    (button :class "bluetooth-icon tray-icon"
+      :onclick "eww update showBluetooth=${!showBluetooth}"
+      ;:tooltip btStatus
+    {btEnabled ? "" : ""})))
+    ;  (disabled icon if needed)

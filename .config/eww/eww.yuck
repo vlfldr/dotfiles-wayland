@@ -1,7 +1,14 @@
 ; vlfldr's eww bar
 ; https://github.com/vlfldr
 
-; window title - far left
+(include "./hyprland.yuck")
+(include "./mpd.yuck")
+(include "./bluetooth.yuck")
+(include "./sliders.yuck")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;; WINDOW TITLE ;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defwindow w_wintitle
   :geometry (geometry :x "0"
                       :y "0"
@@ -14,33 +21,17 @@
   :monitor 0
 (wintitle))
 
-; workspaces - center
-(defwindow w_workspaces
-  :geometry (geometry :x "0"
-                      :y "0"
-                      :width "0px"
-                      :height "32px"
-                      :anchor "top center")
-  :windowtype "dock"
-  :stacking "fg"
-  :wm-ignore false
-  :monitor 0
-(hyprland))
+(defwidget wintitle []
+  (box :class "wintitle container" 
+       :orientation "h"
+       :width 400
+       :halign "start"
+    winvar))
+(defvar winvar "~")
 
-; music - right center
-(defwindow w_music
-  :geometry (geometry :x "836px"
-                      :y "0"
-                      :width "0px"
-                      :height "32px"
-                      )
-  :windowtype "dock"
-  :stacking "fg"
-  :wm-ignore false
-  :monitor 0
-(mpd))
-
-; tray - far right
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;; TRAY ;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defwindow w_tray
   :geometry (geometry :x "0"
                       :y "0"
@@ -53,126 +44,13 @@
   :monitor 0
 (tray))
 
-; popup bluetooth menu
-(defwindow w_bluetooth
-  :geometry (geometry :x "0"
-                      :y "0"
-                      :width "0px"
-                      :height "32px"
-                      :anchor "top right")
-  :windowtype "normal"
-  :stacking "fg"
-  :wm-ignore false
-  :monitor 0
-(p_bluetooth))
-
-; popup volume slider
-(defwindow w_volume
-  :geometry (geometry :x "105px"
-                      :y "42px"
-                      :anchor "top right")
-  :windowtype "dock"
-  :stacking "fg"
-  :wm-ignore false
-  :monitor 0
-(p_volume))
-
-; popup brightness slider
-(defwindow w_brightness
-  :geometry (geometry :x "127px"
-                      :y "42px"
-                      :anchor "top right")
-  :windowtype "dock"
-  :stacking "fg"
-  :wm-ignore false
-  :monitor 0
-(p_brightness))
-
-; popup now playing
-(defwindow w_nowplaying
-  :geometry (geometry :x "0px"
-                      ;:y "52px"
-                      :anchor "top right")
-  :windowtype "dock"
-  :stacking "fg"
-  :wm-ignore false
-  :monitor 0
-(p_nowplaying))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;; POPUP WINDOWS ;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-; volume slider
-(defwidget p_volume []
-  (revealer :transition "slidedown" :duration "500ms" :reveal showVolume
-    (eventbox :onhover "eww update showVolume=true && eww update closeVolumeTimer=0" 
-      :onhoverlost "eww update closeVolumeTimer=1" 
-      (box :class "popup volume-popup"
-        :orientation "v"
-        (scale    :class "volume-slider" 	  
-          :value curVolume
-          :orientation "v"     
-          :flipped true 
-          :tooltip "Volume: ${curVolume}%" 
-          :max 101 
-          :min 0 
-          :onchange "pactl set-sink-volume @DEFAULT_SINK@ {}%"   
-)))))
-
-; brightness slider
-(defwidget p_brightness []
-  (revealer :transition "slidedown" :duration "500ms" :reveal showBrightness
-    (eventbox :onhover "eww update showBrightness=true && eww update closeBrightnessTimer=0" 
-      :onhoverlost "eww update closeVolumeTimer=1" 
-      (box :class "popup brightness-popup"
-        :orientation "v"
-        (scale    :class "brightness-slider" 	  
-          :value curBrightness
-          :orientation "v"     
-          :flipped true 
-          :tooltip "Brightness: ${curBrightness}%" 
-          :max 101 
-          :min 0 
-          :onchange "light -S {}"   
-)))))
-
-; now playing notification
-(defwidget p_nowplaying []
-  (revealer :transition "slideleft" :duration "500ms" :reveal showNowPlaying
-  (box :class "popup now-playing-popup"
-    :space-evenly false
-    (box :class "now-playing-popup--details"
-      :space-evenly true
-      :spacing 10
-      :halign "start"
-      :orientation "v"
-      (button :halign "start" " ${songInfo.artist}")
-      (button :halign "start" "♫ ${songInfo.title}" )
-      (button :halign "start" " ${songInfo.album}" )
-      (button :halign "start" " ${songInfo.format}")
-    )
-    (image :class "now-playing-image"
-      :halign "end"
-      :path albumArt :image-width 128 :image-height 128)
-)))
-(defvar showNowPlaying false)
-(defvar closeNowPlayingTimer 0)
-(defpoll closeNowPlayingListener :interval "1s" 
-  :run-while showNowPlaying "python scripts/autoClose.py nowPlaying")
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;; WIDGETS ;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-; right tray
 (defwidget tray []
   (box :orientation "h"
     :space-evenly false
     :spacing 0
     :class "container tray"
     :halign "end"
-    ;(bluetooth)
+    (bluetooth)
     (brightness)
     (volume)
     (wifi)
@@ -180,100 +58,9 @@
     (clock)
 ))
 
-; bluetooth popup menu widget
-(defwidget p_bluetooth []
-  (revealer :transition "slidedown" :duration "500ms" :reveal showBluetooth
-  (box :class "popup bluetooth-popup"
-       :orientation "v"
-       :width 300
-       :space-evenly false
-       :halign "end"
-       (button :class "bluetooth-button"
-               :onclick "python scripts/bluetooth.py toggle"
-               {btEnabled ? "Turn Bluetooth Off" : "Turn Bluetooth On"})
-       (revealer :transition "slidedown" :duration "500ms" :reveal {btEnabled}
-        (box :space-evenly false :orientation "v"
-          deviceList    
-)))))
-(defpoll deviceList :interval "0s" :run-while btEnabled "bluetoothctl scan on")
-(defvar showBluetooth false)
-
-; bluetooth tray icon
-(defwidget bluetooth []
-  (button :class "bluetooth-icon tray-icon"
-    :onclick "eww update showBluetooth=true"
-    ;:tooltip btStatus
-  ""))
-  ;  (disabled icon if needed)
-(defvar btEnabled false)
-
-; window title
-(defwidget wintitle []
-  (box :class "wintitle container" 
-       :orientation "h"
-       :width 400
-       :halign "start"
-    winvar))
-(defvar winvar "~")
-
-; workspace data
-(defvar ws1 "ws_current")
-(defvar ws2 "ws_inactive")
-(defvar ws3 "ws_inactive")
-(defvar ws4 "ws_inactive")
-(defvar ws5 "ws_inactive")
-(defvar ws6 "ws_inactive")
-
-; hyprland workspaces
-(defwidget hyprland [] 
-  (eventbox
-  (box  :class "hyprland container" 
-        :spacing 5  
-    (button :onclick "hyprctl dispatch workspace 1" :class ws1  "") 
-    (button :onclick "hyprctl dispatch workspace 2" :class ws2  "") 
-    (button :onclick "hyprctl dispatch workspace 3" :class ws3  "") 
-    (button :onclick "hyprctl dispatch workspace 4" :class ws4  "") 
-    (button :onclick "hyprctl dispatch workspace 5" :class ws5  "♫") 
-    (button :onclick "hyprctl dispatch workspace 6" :class ws6  "◇")
-)))
-
-; mpd control
-(defwidget mpd []
-  (revealer :transition "slidedown"
-    :duration "500ms"
-    :reveal showMpd
-      (eventbox
-        :onhover "eww update showSeek=true" 
-        :onhoverlost "eww update showSeek=false" 
-    (box :style "margin-left: ${musicPosition}px" 
-         :class "container mpd-container" 
-         :space-evenly false 
-         :spacing 0
-         :orientation "v"
-      (revealer :transition "slidedown" :duration "500ms" :reveal {!showSeek}
-      (box :space-evenly false :spacing 10 
-      (button :onclick "mpc toggle" :class "mpd-label-icon" 
-        {mpdPlaying ? "" : ""}) 
-      (button :onclick "hyprctl dispatch workspace 5" :class "mpd-info" 
-        "${songInfo.artist} - ${songInfo.title}")
-    (image :path albumArt :image-width 32 :image-height 32)))
-        (revealer :transition "slidedown"
-          :duration "500ms"
-          :reveal showSeek
-        (scale :value mpdProgress 
-              :min 0 
-              :max 101 
-              :class "mpd-slider"
-              :onchange "mpc seek {}%"))
-    ))))
-(defvar albumArt "/tmp/aart")
-(defvar showMpd false)
-(defvar mpdProgress 0)
-(defvar mpdPlaying false)
-(defvar showSeek false)
-(defvar musicPosition 10)
-(defvar songInfo '')
-;(defpoll updateProgress :interval "1s" :run-while mpdPlaying "eww update mpdProgress=${mpdProgress}")
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;; TRAY WIDGETS ;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ; backup status
 (defwidget backup []
@@ -281,52 +68,20 @@
     :onhover "eww update showBackup=true"
     :onhoverlost "eww update showBackup=false"
     (box
-      :orientation "h"
       :space-evenly "false"
       (revealer :transition "slideleft"
         :duration "500ms"
         :reveal showBackup
         (button :class "backup-details" "Backup in progress "))
       (button :class "backup-icon" backupStatus)
-
-      ;(circular-progress :value 
-      ;  :start-at 0 
-      ;  :clockwise true )
       )))
 (defpoll backupStatus :interval "15s" "python scripts/backupStatus.py")
 (defvar showBackup false)
 
-; volume icon
-(defwidget volume []
-	(eventbox :onhover "eww update showVolume=true"
-  :onhoverlost "eww update closeVolumeTimer=1"
-    (button   :onclick "pactl set-sink-mute @DEFAULT_SINK@ toggle"   
-      :class "tray-icon volume-icon volume-icon-${muted}" "墳 ")))
-(defvar showVolume false)
-(defvar closeVolumeTimer 0)
-(defpoll muted :interval "0s" 
-  :run-while showVolume "pactl get-sink-mute @DEFAULT_SINK@ | cut -c 7-")
-(defpoll curVolume :interval "0s" 
-  :run-while showVolume "pactl get-sink-volume @DEFAULT_SINK@ | awk '{print $5}' | tr -d '%'")
-(defpoll closeVolumeListener :interval "1s" 
-  :run-while showVolume "python scripts/autoClose.py volume")
-
-; brightness icon
-(defwidget brightness []
-	(eventbox :onhover "eww update showBrightness=true" 	
-  :onhoverlost "eww update closeBrightnessTimer=1" 		
-    (button  :class "tray-icon brightness-icon" "")))
-(defvar showBrightness false)
-(defvar closeBrightnessTimer 0)
-(defpoll curBrightness :interval "0s" :run-while showBrightness "light | tr -d '.00'")
-(defpoll closeBrightnessListener :interval "1s" 
-  :run-while showBrightness "python scripts/autoClose.py brightness")
-
 ; wifi menu
 (defwidget wifi []
   (button :class "tray-icon wifi-icon"
-    :orientation "h"
-    :onclick `scripts/rofi-wifi-menu.sh`
+    :onclick "scripts/rofi-wifi-menu.sh"
     :tooltip wifistrength 
   wifivar))
 (defpoll wifivar :interval "5s" "python scripts/wifi.py") 
@@ -334,8 +89,7 @@
 
 ; battery
 (defwidget battery []
-  (box :orientation "h"
-  :class "tray-icon battery-icon"
+  (box :class "tray-icon battery-icon"
     :width "30px"
     :halign "end"
     :tooltip battime
@@ -345,22 +99,19 @@
 
 ; time & date
 (defwidget clock []
-    (eventbox 
-              :onhover "eww update showDate=true" 		
-			  :onhoverlost "eww update showDate=false"
-	(box      :orientation "h" 	  
-              :class "clock"
-              :halign "end"
-			  :space-evenly "false" time
-	(revealer :transition "slideright"
-              :duration "500ms"
-			  :reveal showDate
-	(button   :class "date-slider" 	  
-			  :orientation "h"
-      date))
-	)))
+  (eventbox :onhover "eww update showDate=true" 		
+      :onhoverlost "eww update showDate=false"
+    (box  :class "clock"
+          :halign "end"
+          :space-evenly "false" time
+      (revealer :transition "slideright"
+                :duration "500ms"
+                :reveal showDate
+        (button :class "date-slider" date))
+)))
 (defpoll time :interval "5s" "date '+%I:%M'")
-(defpoll date :interval "1m" "date '+%b %d, %Y'")
+(defpoll date :interval "5s" :run-while showDate 
+  :initial "date '+%b %d, %Y'" "date '+%b %d, %Y'")
 (defvar showDate false)
 
 

@@ -1,0 +1,32 @@
+(defwindow w_workspaces
+    :geometry (geometry :x "0"
+                        :y "0"
+                        :width "0px"
+                        :height "32px"
+                        :anchor "top center")
+    :windowtype "dock"
+    :stacking "fg"
+    :wm-ignore false
+    :monitor 0
+(hyprland))
+
+; workspace data
+(defvar ws1 "ws_current")
+(defvar ws2 "ws_inactive")
+(defvar ws3 "ws_inactive")
+(defvar ws4 "ws_inactive")
+(defvar ws5 "ws_inactive")
+(defvar ws6 "ws_inactive")
+
+; hyprland workspaces
+(defwidget hyprland [] 
+  (eventbox
+  (box  :class "hyprland container" 
+        :spacing 5  
+    (button :onclick "hyprctl dispatch workspace 1" :class ws1  "") 
+    (button :onclick "hyprctl dispatch workspace 2" :class ws2  "") 
+    (button :onclick "hyprctl dispatch workspace 3" :class ws3  "") 
+    (button :onclick "hyprctl dispatch workspace 4" :class ws4  "") 
+    (button :onclick "hyprctl dispatch workspace 5" :class ws5  "♫") 
+    (button :onclick "hyprctl dispatch workspace 6" :class ws6  "◇")
+)))

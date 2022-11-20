@@ -1,0 +1,90 @@
+; mpd control
+(defwindow w_music
+    :geometry (geometry :x "836px"
+                        :y "0"
+                        :width "0px"
+                        :height "32px"
+                        )
+    :windowtype "dock"
+    :stacking "fg"
+    :wm-ignore false
+    :monitor 0
+  (mpd))
+
+(defwidget mpd []
+    (revealer :transition "slidedown"
+      :duration "500ms"
+      :reveal showMpd
+        (eventbox
+          :onhover "eww update showSeek=true" 
+          :onhoverlost "eww update showSeek=false" 
+      (box :style "margin-left: ${musicPosition}px" 
+           :class "container mpd-container" 
+           :space-evenly false 
+           :spacing 0
+           :orientation "v"
+        (revealer :transition "slidedown" :duration "500ms" :reveal {!showSeek}
+        (box :space-evenly false :spacing 10 
+        (button :onclick "mpc toggle" :class "mpd-label-icon" 
+          {mpdPlaying ? "" : ""}) 
+        (button :onclick "hyprctl dispatch workspace 5" :class "mpd-info" 
+          "${songInfo.artist} - ${songInfo.title}")
+      (image :path albumArt :image-width 32 :image-height 32)))
+          (revealer :transition "slidedown"
+            :duration "500ms"
+            :reveal showSeek
+          (scale :value mpdProgress 
+                :min 0 
+                :max 101 
+                :class "mpd-slider"
+                :onchange "mpc seek {}%"))
+      ))))
+(defvar albumArt "/tmp/aart")
+(defvar showMpd false)
+(defvar mpdProgress 0)
+(defvar mpdPlaying false)
+(defvar showSeek false)
+(defvar musicPosition 10)
+(defvar songInfo '')
+;(defpoll updateProgress :interval "1s" :run-while mpdPlaying "eww update mpdProgress=${mpdProgress}")
+
+
+
+
+
+; now playing notification
+(defwindow w_nowplaying
+    :geometry (geometry :x "0px"
+                        ;:y "52px"
+                        :anchor "top right")
+    :windowtype "dock"
+    :stacking "fg"
+    :wm-ignore false
+    :monitor 0
+(p_nowplaying))
+  
+(defwidget p_nowplaying []
+  (revealer :transition "slideleft" :duration "500ms" :reveal showNowPlaying
+  (box :class "popup now-playing-popup"
+    :space-evenly false
+    (box :class "now-playing-popup--details"
+      :space-evenly true
+      :spacing 10
+      :halign "start"
+      :orientation "v"
+      (button :halign "start" " ${songInfo.artist}")
+      (button :halign "start" "♫ ${songInfo.title}" )
+      (button :halign "start" " ${songInfo.album}" )
+      (button :halign "start" " ${songInfo.format}")
+    )
+    (image :class "now-playing-image"
+      :halign "end"
+      :path albumArt :image-width 128 :image-height 128)
+)))
+(defvar showNowPlaying false)
+(defvar closeNowPlayingTimer 0)
+(defpoll closeNowPlayingListener :interval "1s" 
+  :run-while showNowPlaying "python scripts/autoClose.py nowPlaying")
+
+
+

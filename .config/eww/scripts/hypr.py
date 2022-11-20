@@ -10,19 +10,17 @@ replacementRules = {
     ' — Firefox Nightly': '',
 }
 
+# hyprland socket ID
+hid = os.environ['HYPRLAND_INSTANCE_SIGNATURE']
+
+# last active workspace
+prevActive = "1"
 
 def applyRules(winTitle):
     for r in replacementRules:
         winTitle = winTitle.replace(r, replacementRules[r])
 
     return winTitle
-
-
-# hyprland socket ID
-hid = os.environ['HYPRLAND_INSTANCE_SIGNATURE']
-
-# last active workspace
-prevActive = "1"
 
 # listen for events
 with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as client:
