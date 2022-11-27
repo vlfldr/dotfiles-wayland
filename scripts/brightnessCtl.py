@@ -16,7 +16,7 @@ if sys.argv[1] == 'up':
     op = '-A'
 
 # modify brightness
-os.system(f'light {op} 10')
+os.system(f'light {op} 5')
 
 # show eww volume bar
 os.system('eww update showBrightness=true')

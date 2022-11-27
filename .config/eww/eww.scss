@@ -195,6 +195,7 @@ image {
 //// BLUETOOTH ////
 .bluetooth-popup {
     min-height: 0;
+    padding-bottom: 0;
 }
 
 // tray icon
@@ -208,16 +209,35 @@ image {
     background-color: $dark0_soft;
     min-width: 137px;
     border-radius: 2px;
+    margin-bottom: 10px;
     padding: 5px;
 }
 
 .device-list {
     margin: 0;
     padding: 0;
+
+    
 }
 
 .device {
     padding: 5px;
+
+    // list padding
+    &:first-child {
+        padding-top: 0;
+    }
+    &:last-child {
+        margin-bottom: 10px;
+    }
+
+    &-connected {
+        color: $neutral_green;
+    }
+
+    .device-icon {
+        margin-left: 10px;
+    }
 }
 
 //// BRIGHTNESS ////

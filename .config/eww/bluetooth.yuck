@@ -17,7 +17,6 @@
        :space-evenly false
        :halign "end"
        (button :class "bluetooth-button"
-               ; scan will not start from here. works perfectly in terminal. TODO: FIX
                :onclick "python scripts/bt.py toggle"
                {btEnabled ? "Turn Bluetooth Off" : "Turn Bluetooth On"})
        (revealer :transition "slidedown" :duration "500ms" :reveal {btEnabled}

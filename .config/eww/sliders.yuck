@@ -54,7 +54,7 @@
 (defwidget p_brightness []
   (revealer :transition "slidedown" :duration "500ms" :reveal showBrightness
     (eventbox :onhover "eww update showBrightness=true && eww update closeBrightnessTimer=0" 
-      :onhoverlost "eww update closeVolumeTimer=1" 
+      :onhoverlost "eww update closeBrightnessTimer=1" 
       (box :class "popup brightness-popup"
         :orientation "v"
         (scale    :class "brightness-slider" 	  
