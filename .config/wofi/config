@@ -1,0 +1,38 @@
+## Wofi Config
+
+## General
+show=drun
+prompt=
+normal_window=true
+layer=overlay
+term=alacritty
+
+## Geometry
+width=258px
+height=295px;
+dynamic_lines=true
+orientation=vertical
+content_halign=center
+line_wrap=off
+
+## Images
+allow_markup=true
+allow_images=false
+image_size=0
+
+## Search
+exec_search=false
+hide_search=true
+parse_search=false
+insensitive=true
+
+## Other
+hide_scroll=true
+no_actions=true
+sort_order=default
+gtk_dark=true
+filter_rate=100
+
+## Keys
+key_expand=Tab
+key_exit=Escape

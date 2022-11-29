@@ -33,9 +33,11 @@
       :class "tray-icon volume-icon volume-icon-${muted}" "墳 ")))
 (defvar showVolume false)
 (defvar closeVolumeTimer 0)
-(defpoll muted :interval "0s" 
+(defpoll muted :interval "1s" 
+  :initial "pactl get-sink-mute @DEFAULT_SINK@ | cut -c 7-"
   :run-while showVolume "pactl get-sink-mute @DEFAULT_SINK@ | cut -c 7-")
-(defpoll curVolume :interval "0s" 
+(defpoll curVolume :interval "1s" 
+  :initial "pactl get-sink-volume @DEFAULT_SINK@ | awk '{print $5}' | tr -d '%'"
   :run-while showVolume "pactl get-sink-volume @DEFAULT_SINK@ | awk '{print $5}' | tr -d '%'")
 (defpoll closeVolumeListener :interval "1s" 
   :run-while showVolume "python scripts/autoClose.py volume")
@@ -74,6 +76,6 @@
     (button  :class "tray-icon brightness-icon" "")))
 (defvar showBrightness false)
 (defvar closeBrightnessTimer 0)
-(defpoll curBrightness :interval "0s" :run-while showBrightness "light")
-(defpoll closeBrightnessListener :interval "1s" 
+(defpoll curBrightness :interval "1s" :initial "light" :run-while showBrightness "light")
+(defpoll closeBrightnessListener :interval "1s"
   :run-while showBrightness "python scripts/autoClose.py brightness")

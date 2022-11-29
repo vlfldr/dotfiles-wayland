@@ -19,5 +19,6 @@ if sys.argv[1] == 'up':
 os.system(f'light {op} 5')
 
 # show eww volume bar
+os.system('eww update curBrightness=' + os.popen('light').read())
 os.system('eww update showBrightness=true')
 os.system('eww update closeBrightnessTimer=2')

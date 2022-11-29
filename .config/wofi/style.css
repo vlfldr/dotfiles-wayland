@@ -1,0 +1,67 @@
+* {
+    all: unset;
+    font-family: "CozetteVector";
+    font-size: 14px;
+}
+
+#window {
+	background-color: --wofi-color0;
+	color: --wofi-color2;
+    min-height: 100px;
+	border-radius: 1px;
+}
+
+#outer-box {
+	padding: 5px;
+    padding-top: 0;
+    margin-top: -16px;
+}
+
+#input {
+    background-color: transparent;
+    max-height: 0;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+#input > image {
+    -gtk-icon-transform: scaleX(0);
+}
+
+#scroll {
+}
+
+#inner-box {
+}
+
+#img {
+}
+
+#text {
+	color: --wofi-color2;
+}
+
+#text:selected {
+	color: --wofi-color0;
+}
+
+#entry {
+    margin: 5px 0;
+    padding-top: 6px;
+    padding-bottom: 4px;
+}
+
+#entry:selected {
+	background-color: --wofi-color1;
+	color: --wofi-color0;
+}
+
+#unselected {
+}
+
+#selected {
+}
+
+#entry:selected {
+    border-radius: 1px;
+}
