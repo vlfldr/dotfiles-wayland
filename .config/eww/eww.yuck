@@ -104,7 +104,7 @@
     (box  :class "clock"
           :halign "end"
           :space-evenly "false" time
-      (revealer :transition "slideright"
+      (revealer :transition "slideleft"
                 :duration "500ms"
                 :reveal showDate
         (button :class "date-slider" date))
@@ -113,6 +113,3 @@
 (defpoll date :interval "5s" :run-while showDate 
   :initial "date '+%b %d, %Y'" "date '+%b %d, %Y'")
 (defvar showDate false)
-
-
-

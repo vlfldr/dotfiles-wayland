@@ -35,13 +35,11 @@ while True:
             os.system('dunstify \"mpcIdle has crashed - invalid status array!\"')
             sys.exit(0)
 
-        # hacky way to center between elements (adjust margins)
-        if len(songInfo['artist']  + ' - ' + songInfo['title'] ) > 51:
-            songInfo['title']  = songInfo['title'] [:48 - len(songInfo['artist'] )] + '...'
-            os.system('eww update musicPosition=10')
-        else:
-            leftMargin = 140 - (len(songInfo['artist']  + ' - ' + songInfo['title'] ) * 1.2)
-            os.system('eww update musicPosition=' + str(leftMargin))
+        # trim artist and title lengths
+        if len(songInfo['artist']) > 27:
+            songInfo['artist'] = songInfo['artist'][:23] + '...'
+        if len(songInfo['title']) > 28:
+            songInfo['title'] = songInfo['title'][:24] + '...'
 
         # next, prev, play, pause, seek
         if status[0] == '[playing]':

@@ -137,6 +137,9 @@ scale trough {
 
 .mpd-container {
     padding-right: 0;
+    margin-left: 0;
+    margin-right: 0;
+    transition: width 1s ease-in-out;
 }
 
 // playing/paused icon

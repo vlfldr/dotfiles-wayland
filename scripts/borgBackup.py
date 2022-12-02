@@ -31,6 +31,7 @@ excludeDirs = [
     'home/steve/music',
     'home/steve/gold',
     'home/steve/sync',
+    'home/steve/.rustup',
     'root/.config/borg/security/*',
     'home/*/.mozilla/firefox/*/Cache',
     '*.Trash-1000'
@@ -45,7 +46,7 @@ retentionSettings = {
 # END CONFIGURATION ###
 
 # total size of disk in GB. used to calc % progress
-totalSize = int(os.popen('du -msh / 2>/dev/null').read()[:-2].replace('G', '').strip())
+#totalSize = int(os.popen('du -msh / 2>/dev/null').read()[:-2].replace('G', '').strip())
 
 
 logging.basicConfig(filename=logFile,

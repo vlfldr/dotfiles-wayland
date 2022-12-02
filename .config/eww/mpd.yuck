@@ -1,6 +1,6 @@
 ; mpd control
 (defwindow w_music
-    :geometry (geometry :x "836px"
+    :geometry (geometry :x "838px"
                         :y "0"
                         :width "0px"
                         :height "32px"
@@ -9,7 +9,13 @@
     :stacking "fg"
     :wm-ignore false
     :monitor 0
-  (mpd))
+  (mpd_container))
+
+; dynamically centers between windows
+(defwidget mpd_container []
+  (centerbox :width 484 
+    (box)(mpd)(box))
+)
 
 (defwidget mpd []
     (revealer :transition "slidedown"
@@ -18,7 +24,7 @@
         (eventbox
           :onhover "eww update showSeek=true" 
           :onhoverlost "eww update showSeek=false" 
-      (box :style "margin-left: ${musicPosition}px" 
+      (box 
            :class "container mpd-container" 
            :space-evenly false 
            :spacing 0
@@ -44,7 +50,6 @@
 (defvar mpdProgress 0)
 (defvar mpdPlaying false)
 (defvar showSeek false)
-(defvar musicPosition 10)
 (defvar songInfo '')
 ;(defpoll updateProgress :interval "1s" :run-while mpdPlaying "eww update mpdProgress=${mpdProgress}")
 
