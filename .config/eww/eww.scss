@@ -86,8 +86,12 @@ $faded_orange   :#af3a03;
       }
 }
 
-.now-playing-popup--details {
-    margin-right: 20px;
+.now-playing-popup {
+    margin-top: 55.5px;
+
+    &--details {
+        margin-right: 20px;
+    }
 }
 
 // sliders

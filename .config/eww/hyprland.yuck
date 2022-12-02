@@ -15,7 +15,7 @@
 (defvar ws2 "ws_inactive")
 (defvar ws3 "ws_inactive")
 (defvar ws4 "ws_inactive")
-(defvar ws5 "ws_inactive")
+(defvar ws5 "ws_active")
 (defvar ws6 "ws_inactive")
 
 ; hyprland workspaces

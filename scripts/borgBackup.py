@@ -29,6 +29,8 @@ excludeDirs = [
     'home/*/.cargo',
     'home/steve/backups',
     'home/steve/music',
+    'home/steve/gold',
+    'home/steve/sync',
     'root/.config/borg/security/*',
     'home/*/.mozilla/firefox/*/Cache',
     '*.Trash-1000'

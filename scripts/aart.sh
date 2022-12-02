@@ -78,6 +78,8 @@ set_art() {
 }
 
 first_start() {
+    # wait for mpd to start
+    sleep 10
 	# check if mpd is running
 	pgrep mpd >/dev/null || exit 1
 
@@ -92,8 +94,8 @@ first_start() {
 }
 
 close_script() {
-	# clean up temp file
-	rm "$AART_TEMP"
+    # replace file with placeholder until next run
+    cp "$AART_NOART" "$AART_TEMP"
 
 	# remove weird artifact when closing
 	printf "\n"
