@@ -2,6 +2,7 @@ import os
 import sys
 import re
 import json
+import time
 
 def ewwUpd(ewwVar, newVal):
     newVal = str(newVal)
@@ -21,9 +22,9 @@ while True:
             ewwUpd('showMpd', 'false')
             ewwUpd('mpdPlaying', 'false')
             continue
-        
+
         songInfo = {"artist": raw[0], "title": raw[1], "album": raw[2],
-        "format": raw[3][::-1][:raw[3][::-1].find('.')][::-1].upper() }
+        "format": raw[3][::-1][:raw[3][::-1].find('.')][::-1].upper()}
 
         # yields array [ playing/paused/stopped, #X/Y, MM:SS/MM:SS, (<progress>%) ]
         if raw[4] != '':
@@ -46,6 +47,7 @@ while True:
             ewwUpd('songInfo', json.dumps(songInfo).replace('"', '\\"'))
             ewwUpd('showMpd', 'true')
             ewwUpd('mpdPlaying', 'true')
+            time.sleep(0.1) # for album art to update
             ewwUpd('showNowPlaying', 'true')
             ewwUpd('closeNowPlayingTimer', 4)
             ewwUpd('mpdProgress', status[3][1:-2])  # TODO: this is only updated on events

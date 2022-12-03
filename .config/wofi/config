@@ -5,7 +5,7 @@ show=drun
 prompt=
 normal_window=true
 layer=overlay
-term=alacritty
+term=kitty
 
 ## Geometry
 width=258px
