@@ -47,7 +47,7 @@ while True:
             ewwUpd('songInfo', json.dumps(songInfo).replace('"', '\\"'))
             ewwUpd('showMpd', 'true')
             ewwUpd('mpdPlaying', 'true')
-            time.sleep(0.1) # for album art to update
+            time.sleep(0.3) # for album art to update
             ewwUpd('showNowPlaying', 'true')
             ewwUpd('closeNowPlayingTimer', 4)
             ewwUpd('mpdProgress', status[3][1:-2])  # TODO: this is only updated on events

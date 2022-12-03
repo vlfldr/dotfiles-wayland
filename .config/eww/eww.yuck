@@ -40,7 +40,7 @@
                       :anchor "top right")
   :windowtype "dock"
   :stacking "fg"
-  :wm-ignore false
+  :wm-ignore true
   :monitor 0
 (tray))
 

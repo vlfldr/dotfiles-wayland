@@ -3,7 +3,7 @@
 
 
 //// GRUVBOX COLORS ////
-$shadow         :rgba(60, 56, 54, 0.5);
+$shadow         :rgba(34, 34, 34, 0.5);
 $dark0_hard     :#1d2021;
 $dark0          :#282828;
 $dark0_soft     :#32302f;
@@ -137,8 +137,6 @@ scale trough {
 
 .mpd-container {
     padding-right: 0;
-    margin-left: 0;
-    margin-right: 0;
     transition: width 1s ease-in-out;
 }
 

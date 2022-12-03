@@ -51,16 +51,16 @@ use_console_editor = yes
 #display_volume_level = yes
 #display_bitrate = no
 #display_remaining_time = no
-#header_visibility = yes
+header_visibility = no
 #enable_window_title = yes
 #statusbar_visibility = yes
 #connected_message_on_startup = yes
-#titles_visibility = yes
+titles_visibility = no
 
 #playlist_disable_highlight_delay = 5
 #message_delay_time = 5
 #execute_on_song_change = ""
-#progressbar_look = =>
+progressbar_look = "━■ "
 
 #startup_slave_screen = ""
 #locked_screen_width_part = 50
@@ -82,17 +82,17 @@ use_console_editor = yes
 
 
 ##### colors
-#colors_enabled = yes
+colors_enabled = yes
 #empty_tag_color = cyan
 #header_window_color = default
 #volume_color = default
 #state_line_color = default
 #state_flags_color = default:b
-#main_window_color = yellow
+main_window_color = default
 #color1 = white
 #color2 = green
 #progressbar_color = black:b
-#progressbar_elapsed_color = green:b
+progressbar_elapsed_color = green:b
 #statusbar_color = default
 #statusbar_time_color = default:b
 #player_state_color = default:b
