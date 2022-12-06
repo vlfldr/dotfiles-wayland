@@ -1,4 +1,7 @@
-#! /bin/bash
+! /bin/bash
+
+enable alias creation
+shopt -s expand_aliases
 
 # exit on no args
 if [ $# -eq 0 ]; then
@@ -13,13 +16,13 @@ dnf upgrade --refresh -y
 
 echo "Installing and configuring git..."
 dnf install -y git
-alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+alias config='/usr/bin/git --git-dir=/home/$1/.cfg/ --work-tree=/home/$1'
 echo ".cfg" >> .gitignore
 
 echo "Cloning and checking out dotfiles..."
-git clone --bare https://github.com/vlfldr/dotfiles-wayland "./.cfg"
-config checkout
-config config --local status.showUntrackedFiles no
+sudo -u $1 git clone --bare "https://github.com/vlfldr/dotfiles-wayland" "./.cfg"
+sudo -u $1 config checkout
+#config config --local status.showUntrackedFiles no
 
 echo "Applying dnf settings..."
 mv ./.config/setup/dnf.conf /etc/dnf/dnf.conf
@@ -37,6 +40,9 @@ dnf install -y ImageMagick bat bluez borgbackup cava codium fish freeglut fzf gi
 kernel-tools hyprland kitty light lsd mpv ncmpcpp neofetch neovim network-manager-applet python3-pillow ranger \
 rpmfusion-free-release rpmfusion-nonfree-release swww sxiv wayland-logout wofi
 
+# fix wayland DPI bug with custom .desktop entry
+desktop-file-install "/home/$1/.local/share/applications/codium.desktop"
+
 dnf install -y ./*gotop*.rpm
 
 echo "Installing eww dependencies..."
@@ -51,7 +57,7 @@ git clone https://github.com/elkowar/eww
 cd eww && cargo build --release --no-default-features --features=wayland
 
 echo "Installing eww..."
-chmod +x ./target/release/eww && mv ./target/release/eww /usr/bin/eww
+sudo -u $1 chmod +x ./target/release/eww && mv ./target/release/eww /usr/bin/eww
 
 echo "Cleaning up..."
 cd ..
@@ -59,6 +65,29 @@ rm -rf ./eww "$HOME/.rustup"
 
 echo "Setting default shell to fish..."
 sudo -u "$1" chsh -s /usr/bin/fish
+
+echo "Installing Cozette font..."
+mkdir -p /usr/local/share/fonts/cozette
+mv CozetteVector.otf /usr/local/share/fonts/cozette
+chown -R root: /usr/local/share/fonts/cozette
+chmod 644 /usr/local/share/fonts/cozette/*
+restorecon -RF /usr/local/share/fonts/cozette
+fc-cache -v
+
+read -r -p "Install VS Codium (open source VS Code) themes & extensions? [y/n]: " input
+case $input in [yY][eE][sS]|[yY])
+    xargs -n1 codium --install-extension "rice_extensions_list.txt"
+    ;; *)
+esac
+
+read -r -p "Download and theme Firefox Nightly? [y/n]: " input
+case $input in [yY][eE][sS]|[yY])
+    wget --content-disposition "https://download.mozilla.org/?product=firefox-nightly-latest-ssl&os=linux64&lang=en-US"
+    tar -xvf ./firefox-*.tar.bz2 --directory=/opt
+    rm -rf ./firefox-*.tar.bz2
+    desktop-file-install "/home/$1/.local/share/applications/nightly.desktop"
+    ;; *)
+esac
 
 echo ""
 echo "Setup complete! Please reboot and select the Hyprland session at login. "
