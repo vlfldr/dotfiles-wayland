@@ -30,7 +30,7 @@ chargingGlyphs = [
 def getGlyph(p, batState):
     if batState == 'discharging':
         return dischargingGlyphs[ int( int(p[:-1]) // 10 ) - 1 ]
-    elif batState == 'charging':
+    else:
         lvl = int(int(p[:-1]))
         if lvl < 20:
             res = chargingGlyphs[0]
