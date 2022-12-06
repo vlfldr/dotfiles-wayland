@@ -1,9 +1,15 @@
-vim.api.nvim_exec([[
-augroup packer_user_config
-    autocmd!
-    autocmd BufWritePost init.lua PackerCompile
-augroup end
-]], false)
+local ensure_packer = function()
+  local fn = vim.fn
+  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+  if fn.empty(fn.glob(install_path)) > 0 then
+    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+    vim.cmd [[packadd packer.nvim]]
+    return true
+  end
+  return false
+end
+
+local packer_bootstrap = ensure_packer()
 
 return require('packer').startup(function(use)
     use 'wbthomason/packer.nvim'
@@ -21,4 +27,8 @@ return require('packer').startup(function(use)
     use 'elkowar/yuck.vim'          -- eww syntax highlighting
     use 'kyazdani42/nvim-web-devicons'  -- extra devicons
     use 'ryanoasis/vim-devicons'    -- icons
+
+    if packer_bootstrap then
+        require('packer').sync()
+    end
 end)

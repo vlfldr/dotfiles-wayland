@@ -1,0 +1,24 @@
+[Desktop Entry]
+Version=1.0
+Name=Firefox Nightly
+Comment=Web Browser
+Icon=/opt/firefox/browser/chrome/icons/default/default128.png
+Exec=/opt/firefox/firefox
+Terminal=false
+Type=Application
+Categories=Network;WebBrowser;
+Actions=Default;Mozilla;ProfileManager;
+
+X-Desktop-File-Install-Version=0.26
+
+[Desktop Action Default]
+Name=Default Profile
+Exec=/opt/firefox/firefox –no-remote
+
+[Desktop Action Mozilla]
+Name=Mozilla Profile
+Exec=/opt/firefox/firefox –no-remote
+
+[Desktop Action ProfileManager]
+Name=Profile Manager
+Exec=/opt/firefox/firefox –no-remote –profile-manager

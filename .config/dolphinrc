@@ -1,0 +1,47 @@
+MenuBar=Disabled
+
+[$Version]
+update_info=dolphin_detailsmodesettings.upd:rename-leading-padding
+
+[ContextMenu]
+ShowAddToPlaces=false
+ShowCopyLocation=false
+ShowViewMode=false
+
+[General]
+ConfirmClosingMultipleTabs=false
+ShowFullPath=true
+ShowSelectionToggle=false
+ShowStatusBar=false
+Version=202
+ViewPropsTimestamp=2022,10,21,22,34,34.739
+
+[IconsMode]
+PreviewSize=48
+
+[KFileDialog Settings]
+Places Icons Auto-resize=false
+Places Icons Static Size=22
+
+[KPropertiesDialog]
+DP-11 DP-10 Height 2560x1440 DP-11=464
+DP-11 DP-10 Width 2560x1440 DP-11=501
+DP-5 DP-6 Height 2560x1440 DP-6=457
+DP-5 DP-6 Width 2560x1440 DP-6=485
+eDP-1 Height 1504x1002 eDP-1=470
+eDP-1 Height 1504x1003=616
+eDP-1 Width 1504x1002 eDP-1=421
+eDP-1 Width 1504x1003=438
+
+[MainWindow]
+MenuBar=Disabled
+ToolBarsMovable=Disabled
+eDP-1 Height 1504x1003=716
+eDP-1 Width 1504x1003=1091
+
+[Open-with settings]
+CompletionMode=1
+History=
+
+[PreviewSettings]
+Plugins=audiothumbnail,blenderthumbnail,comicbookthumbnail,cursorthumbnail,djvuthumbnail,ebookthumbnail,exrthumbnail,directorythumbnail,fontthumbnail,imagethumbnail,jpegthumbnail,kraorathumbnail,windowsexethumbnail,windowsimagethumbnail,opendocumentthumbnail,gsthumbnail,rawthumbnail,svgthumbnail

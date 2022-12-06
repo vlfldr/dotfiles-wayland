@@ -1,0 +1,35 @@
+{
+    "editor.bracketPairColorization.enabled": true,
+    "editor.guides.bracketPairs":"active",
+    "window.menuBarVisibility": "toggle",
+    "workbench.statusBar.visible": false,
+    "editor.renderWhitespace": "none",
+    "security.workspace.trust.banner": "never",
+    "security.workspace.trust.enabled": false,
+    "glassit.alpha": 50,
+    "editor.fontFamily": "'CozetteVector', 'monospace', monospace",
+    "window.title": "${rootName}${separator}${activeEditorShort}",
+    "window.titleSeparator": " ⭢ ",
+    "workbench.enableExperiments": false,
+    "workbench.experimental.editSessions.autoStore": "onShutdown",
+    "update.showReleaseNotes": false,
+    "git.autofetch": true,
+    "workbench.preferredDarkColorTheme": "Gruvbox Dark Soft",
+    "workbench.preferredHighContrastColorTheme": "Gruvbox Dark Soft",
+    "workbench.preferredHighContrastLightColorTheme": "Gruvbox Dark Soft",
+    "workbench.preferredLightColorTheme": "Gruvbox Dark Soft",
+    "glassit-linux.opacity": 50,
+    "transparent-win.transparency": 0.5,
+    "workbench.iconTheme": "chalice-icon-theme",
+    "workbench.colorTheme": "Gruvbox Dark Soft",
+    "git.enableSmartCommit": true,
+    "git.confirmSync": false,
+    "[vue]": {
+        "editor.defaultFormatter": "octref.vetur"
+    },
+    "editor.guides.indentation": false,
+    "explorer.confirmDragAndDrop": false,
+    "editor.unicodeHighlight.allowedCharacters": {
+        " ": true
+    }
+}
