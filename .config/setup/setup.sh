@@ -21,8 +21,11 @@ echo ".cfg" >> .gitignore
 
 echo "Cloning and checking out dotfiles..."
 sudo -u $1 git clone --bare "https://github.com/vlfldr/dotfiles-wayland" "./.cfg"
-sudo -u $1 config checkout
-#config config --local status.showUntrackedFiles no
+function config {
+   /usr/bin/git --git-dir=.cfg/ --work-tree=. $@
+}
+config checkout
+config config --local status.showUntrackedFiles no
 
 echo "Applying dnf settings..."
 mv ./.config/setup/dnf.conf /etc/dnf/dnf.conf
@@ -40,7 +43,8 @@ dnf install -y ImageMagick bat bluez borgbackup cava codium fish freeglut fzf gi
 kernel-tools hyprland kitty light lsd mpv ncmpcpp neofetch neovim network-manager-applet python3-pillow ranger \
 rpmfusion-free-release rpmfusion-nonfree-release swww sxiv wayland-logout wofi eww
 
-dnf install -y ./*gotop*.rpm
+dnf install -y .config/setup/gotop*.rpm
+rm -f .config/setup/gotop*.rpm
 
 # fix wayland DPI bug with custom .desktop entry
 desktop-file-install ".local/share/applications/codium.desktop"
@@ -75,7 +79,7 @@ restorecon -RF /usr/local/share/fonts/cozette
 fc-cache -r 2&>1
 
 echo "Installing Neovim plugins..."
-nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
+su -c "nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'" - "$1"
 
 read -r -p "Install VS Codium (open source VS Code) themes & extensions? [y/n]: " input
 case $input in [yY][eE][sS]|[yY])
