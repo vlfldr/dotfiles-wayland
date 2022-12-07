@@ -41,7 +41,7 @@ dnf upgrade -y
 echo "Installing rice packages..."
 dnf install -y ImageMagick bat bluez borgbackup cava codium fish freeglut fzf git grim slurp kernel-modules-extra \
 kernel-tools hyprland kitty light lsd mpv ncmpcpp neofetch neovim network-manager-applet python3-pillow ranger \
-rpmfusion-free-release rpmfusion-nonfree-release swww sxiv wayland-logout wofi eww
+rpmfusion-free-release rpmfusion-nonfree-release swww sxiv wayland-logout wofi eww nodejs-bash-language-server
 
 dnf install -y .config/setup/gotop*.rpm
 rm -f .config/setup/gotop*.rpm
@@ -76,31 +76,50 @@ mv .config/setup/CozetteVector.otf /usr/local/share/fonts/cozette
 chown -R root: /usr/local/share/fonts/cozette
 chmod 644 /usr/local/share/fonts/cozette/*
 restorecon -RF /usr/local/share/fonts/cozette
-fc-cache -r 2&>1
+su -c "fc-cache -r 2&>1" - "$1"
 
 echo "Installing Neovim plugins..."
 su -c "nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'" - "$1"
 
+read -r -p "Install python LSP server? [y/n]: " input
+case $input in [yY])
+    dnf install python-lsp-server
+    ;; *)
+esac
+
 read -r -p "Install VS Codium (open source VS Code) themes & extensions? [y/n]: " input
-case $input in [yY][eE][sS]|[yY])
+case $input in [yY])
     cat "config/setup/rice_extensions_list.txt" | xargs -n1 codium --install-extension
     ;; *)
 esac
 
 read -r -p "Download and theme Firefox Nightly? [y/n]: " input
-case $input in [yY][eE][sS]|[yY])
+case $input in [yY])
     wget --content-disposition "https://download.mozilla.org/?product=firefox-nightly-latest-ssl&os=linux64&lang=en-US"
     tar -xvf ./firefox-*.tar.bz2 --directory=/opt
     rm -rf ./firefox-*.tar.bz2
     desktop-file-install ".local/share/applications/nightly.desktop"
+
+    ###
+    # TODO: firefox rice
+    ###
+    ;; *)
+esac
+
+read -r -p "Download and apply KDE theme?" input
+case $input in [yY])
+    ###
+    # TODO: KDE theme
+    ###
     ;; *)
 esac
 
 echo ""
-echo "Setup complete! Please reboot and select the Hyprland session at login. "
+echo "Setup complete! To use mpd/ncmpcpp, mount or move your library to ~/music."
+echo "Please reboot and select the Hyprland session at login. "
 read -r -p "Would you like to reboot now? [y/n]: " input
 
-case $input in [yY][eE][sS]|[yY])
+case $input in [yY])
     reboot;; *)
     exit 0;;
 esac

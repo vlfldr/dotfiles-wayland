@@ -1,7 +1,8 @@
 import os
 import sys
 
-log = '/home/steve/.config/borg/borg.log'
+home = os.path.expanduser('~')
+log = os.path.join(home, '.config/borg/borg.log')
 
 if not os.path.exists(log):
     sys.exit(0)

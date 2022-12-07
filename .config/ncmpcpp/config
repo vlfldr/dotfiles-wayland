@@ -1,4 +1,4 @@
-mpd_music_dir = /home/steve/music
+mpd_music_dir = ~/music
 
 ##### music visualizer #####
 ##
