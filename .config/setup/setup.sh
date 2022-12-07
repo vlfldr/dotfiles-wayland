@@ -21,19 +21,19 @@ echo ".cfg" >> .gitignore
 
 echo "Cloning and checking out dotfiles..."
 sudo -u $1 git clone --bare "https://github.com/vlfldr/dotfiles-wayland" "./.cfg"
-function config {
-   /usr/bin/git --git-dir=.cfg/ --work-tree=. $@
+config() {
+   /usr/bin/git --git-dir=.cfg/ --work-tree=. "$@"
 }
 config checkout
-config config --local status.showUntrackedFiles no
+config config --local status.showUntrackedFiles no
 
 echo "Applying dnf settings..."
 mv ./.config/setup/dnf.conf /etc/dnf/dnf.conf
 mv ./.config/setup/*.repo /etc/yum.repos.d/
 
 echo "Installing RPM fusion repositories..."
-dnf install -y https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
-dnf install -y https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+dnf install -y https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-"$(rpm -E %fedora)".noarch.rpm
+dnf install -y https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-"$(rpm -E %fedora)".noarch.rpm
 
 echo "Updating repo keys..."
 dnf upgrade -y
@@ -41,7 +41,7 @@ dnf upgrade -y
 echo "Installing rice packages..."
 dnf install -y ImageMagick bat bluez borgbackup cava codium fish freeglut fzf git grim slurp kernel-modules-extra \
 kernel-tools hyprland kitty light lsd mpv ncmpcpp neofetch neovim network-manager-applet python3-pillow ranger \
-rpmfusion-free-release rpmfusion-nonfree-release swww sxiv wayland-logout wofi eww nodejs-bash-language-server
+rpmfusion-free-release rpmfusion-nonfree-release swww sxiv wayland-logout wofi eww
 
 dnf install -y .config/setup/gotop*.rpm
 rm -f .config/setup/gotop*.rpm
@@ -81,17 +81,17 @@ su -c "fc-cache -r 2&>1" - "$1"
 echo "Installing Neovim plugins..."
 su -c "nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'" - "$1"
 
-read -r -p "Install python LSP server? [y/n]: " input
+read -r -p "Install VS Codium (open source VS Code) themes & extensions? [y/n]: " input
 case $input in [yY])
-    dnf install python-lsp-server
+    su -c "xargs -n1 codium --install-extension" - "$1" < ".config/setup/rice_extensions_list.txt"
     ;; *)
 esac
 
-read -r -p "Install VS Codium (open source VS Code) themes & extensions? [y/n]: " input
-case $input in [yY])
-    cat "config/setup/rice_extensions_list.txt" | xargs -n1 codium --install-extension
-    ;; *)
-esac
+read -r -p "Install python LSP server? [y/n]: " input
+case $input in [yY]) dnf install python-lsp-server ;; *) esac
+
+read -r -p "Install bash LSP server? [y/n]: " input
+case $input in [yY]) dnf install nodejs-bash-language-server;; *) esac
 
 read -r -p "Download and theme Firefox Nightly? [y/n]: " input
 case $input in [yY])
@@ -106,10 +106,10 @@ case $input in [yY])
     ;; *)
 esac
 
-read -r -p "Download and apply KDE theme?" input
+read -r -p "Download and apply KDE theme? [y/n]: " input
 case $input in [yY])
     ###
-    # TODO: KDE theme
+    # TODO: KDE, gtk, cursor theme
     ###
     ;; *)
 esac
