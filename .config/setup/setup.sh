@@ -1,31 +1,27 @@
 #! /bin/bash
 
-# enable alias creation
-shopt -s expand_aliases
-
 # exit on no args
 if [ $# -eq 0 ]; then
  echo "usage: sudo ./setup.sh \$USER"
  exit 1
 fi
 
-cd "/home/$1"
+cd "/home/$1" || exit 1 
 
 echo "Updating system packages. This will take a while..."
 dnf upgrade --refresh -y
 
 echo "Installing and configuring git..."
 dnf install -y git
-alias config='/usr/bin/git --git-dir=/home/$1/.cfg/ --work-tree=/home/$1'
 echo ".cfg" >> .gitignore
 
 echo "Cloning and checking out dotfiles..."
-sudo -u $1 git clone --bare "https://github.com/vlfldr/dotfiles-wayland" "./.cfg"
+sudo -u "$1" git clone --bare "https://github.com/vlfldr/dotfiles-wayland" "./.cfg"
 config() {
-   /usr/bin/git --git-dir=.cfg/ --work-tree=. "$@"
+    /usr/bin/git --git-dir=.cfg/ --work-tree=. "$@"
 }
 config checkout
-config config --local status.showUntrackedFiles no
+config config --local status.showUntrackedFiles no
 
 echo "Applying dnf settings..."
 mv ./.config/setup/dnf.conf /etc/dnf/dnf.conf
@@ -87,7 +83,7 @@ case $input in [yY])
     ;; *)
 esac
 
-read -r -p "Install python LSP server? [y/n]: " input
+read -r -p "Install python LSP sesyrver? [y/n]: " input
 case $input in [yY]) dnf install python-lsp-server ;; *) esac
 
 read -r -p "Install bash LSP server? [y/n]: " input
