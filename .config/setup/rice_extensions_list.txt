@@ -1,12 +1,4 @@
-antfu.browse-lite
-antfu.vite
 artlaman.chalice-icon-theme
 eww-yuck.yuck
 jdinhlife.gruvbox
 naumovs.color-highlight
-octref.vetur
-ritwickdey.LiveServer
-slevesque.shader
-syler.sass-indented
-tht13.python
-Vue.volar
