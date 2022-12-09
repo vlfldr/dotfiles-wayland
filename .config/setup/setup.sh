@@ -92,19 +92,9 @@ case $input in [yY])
     tar -xvf ./firefox-*.tar.bz2 --directory=/opt
     rm -rf ./firefox-*.tar.bz2
     desktop-file-install ".local/share/applications/nightly.desktop"
-
-    ###
-    # TODO: firefox rice
-    ###
     ;; *)
-esac
-
-read -r -p "Download and apply KDE theme? [y/n]: " input
-case $input in [yY])
-    ###
-    # TODO: KDE, gtk, cursor theme
-    ###
-    ;; *)
+    # remove firefox config files if user declines to install
+    rm -rf .config/mozilla
 esac
 
 echo "Setting default shell to fish..."

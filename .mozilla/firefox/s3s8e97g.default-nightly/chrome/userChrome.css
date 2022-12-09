@@ -1,0 +1,68 @@
+* {
+    font: normal 14px "CozetteVector" !important;
+}
+
+#reload-button, #context-reload, #back-button, #forward-button, #nav-bar-overflow-button, #PanelUI-menu-button, #stop-button, #reload-stop-button {
+    list-style-image: none !important;
+    position: relative;
+}
+
+
+
+#page-action-buttons, #identity-icon-box, #tracking-protection-icon-container  {
+    list-style-image: none !important;
+    width: 0 !important;
+    display: none !important;
+}
+
+#TabsToolbar {
+    margin-top: 6px !important;
+}
+
+#stop-button::after {
+    content: "✕";
+    position: absolute;
+    left: 9px;
+    top: 5px;
+    font-size: 30px;
+}
+
+#reload-button::after {
+    content: "↻";
+    position: absolute;
+    left: 9px;
+    top: 5px;
+    font-size: 30px;
+}
+
+#back-button::after {
+    content: "←";
+    position: absolute;
+    left: 14px;
+    top: 4px;
+    font-size: 30px;
+}
+
+#forward-button::after {
+    content: "→";
+    position: absolute;
+    left: 51px;
+    top: 4px;
+    font-size: 30px;
+}
+
+#nav-bar-overflow-button::after {
+    content: "↘";
+    position: absolute;
+    left: 14px;
+    top: 7px;
+    font-size: 24px;
+}
+
+#PanelUI-menu-button::after {
+    content: "≡";
+    position: absolute;
+    left: 2px;
+    top: 3.5px;
+    font-size: 30px;
+}
