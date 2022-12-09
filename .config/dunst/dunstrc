@@ -18,10 +18,10 @@
     height = 300
 
     # Position the notification in the top right corner
-    origin = center 
+    origin = top-right
 
     # Offset from the origin
-    offset = 0x0
+    offset = 11x56
 
     # Scale factor. It is auto-detected if value is 0.
     scale = 0
@@ -69,8 +69,7 @@
     frame_width = 2
 
     # Defines color of the frame around the notification window.
-
-    frame_color = "#ebdbb2"
+    frame_color = "#BDAE93"
 
     # Size of gap to display between notifications - requires a compositor.
     # If value is greater than 0, separator_height will be ignored and a border
@@ -98,7 +97,7 @@
 
     ### Text ###
 
-    font = CozetteVector 12
+    font = CozetteVector 11
 
     # The spacing between lines.  If the height is smaller than the
     # font height, it will get raised to the font height.
@@ -123,7 +122,7 @@
     #   %n  progress value if set without any extra characters
     #   %%  Literal %
     # Markup is allowed
-    format = "<span size="20.0pt">%s</span> %b"
+    format = "%s %b"
 
     # Alignment of message text.
     # Possible values are "left", "center" and "right".
@@ -136,7 +135,7 @@
     # Show age of message if message is older than show_age_threshold
     # seconds.
     # Set to -1 to disable.
-    show_age_threshold = 60
+    show_age_threshold = -1
 
     # Specify where to make an ellipsis in long lines.
     # Possible values are "start", "middle" and "end".
@@ -149,7 +148,7 @@
     stack_duplicates = true
 
     # Hide the count of stacked notifications with the same content
-    hide_duplicate_count = false
+    hide_duplicate_count = true
 
     # Display indicators for URLs (U) and actions (A).
     show_indicators = yes
@@ -210,7 +209,7 @@
     # corners.
     # The radius will be automatically lowered if it exceeds half of the
     # notification height to avoid clipping text and/or icons.
-    corner_radius = 5
+    corner_radius = 2
 
     # Ignore the dbus closeNotification message.
     # Useful to enforce the timeout set by dunst configuration. Without this
@@ -227,18 +226,6 @@
 
     # Set this to true to use X11 output on Wayland.
     force_xwayland = false
-
-    ### Legacy
-
-    # Use the Xinerama extension instead of RandR for multi-monitor support.
-    # This setting is provided for compatibility with older nVidia drivers that
-    # do not support RandR and using it on systems that support RandR is highly
-    # discouraged.
-    #
-    # By enabling this setting dunst will not be able to detect when a monitor
-    # is connected or disconnected which might break follow mode if the screen
-    # layout changes.
-    force_xinerama = false
 
     ### mouse
 
@@ -275,15 +262,15 @@
     # Otherwise the "#" and following would be interpreted as a comment.
     background = "#222222"
     foreground = "#888888"
-    timeout = 10
+    timeout = 3
     # Icon for notifications with low urgency, uncomment to enable
     #default_icon = /path/to/icon
 
 [urgency_normal]
-    background = "#285577"
-    foreground = "#ffffff"
+    background = "#3C3836"
+    foreground = "#EBDBB2"
     highlight = "#EBDBB2"
-    timeout = 10
+    timeout = 3
     # Icon for notifications with normal urgency, uncomment to enable
     #default_icon = /path/to/icon
 
@@ -291,7 +278,7 @@
     background = "#900000"
     foreground = "#ffffff"
     frame_color = "#ff0000"
-    timeout = 0
+    timeout = 10
     # Icon for notifications with critical urgency, uncomment to enable
     #default_icon = /path/to/icon
 

@@ -63,9 +63,6 @@ desktop-file-install ".local/share/applications/codium.desktop"
 # cd ..
 # rm -rf ./eww "$HOME/.rustup"
 
-echo "Setting default shell to fish..."
-sudo -u "$1" chsh -s /usr/bin/fish
-
 echo "Installing Cozette font..."
 mkdir -p /usr/local/share/fonts/cozette
 mv .config/setup/CozetteVector.otf /usr/local/share/fonts/cozette
@@ -83,11 +80,11 @@ case $input in [yY])
     ;; *)
 esac
 
-read -r -p "Install python LSP sesyrver? [y/n]: " input
-case $input in [yY]) dnf install python-lsp-server ;; *) esac
+read -r -p "Install python LSP server? [y/n]: " input
+case $input in [yY]) dnf install -y python-lsp-server ;; *) esac
 
 read -r -p "Install bash LSP server? [y/n]: " input
-case $input in [yY]) dnf install nodejs-bash-language-server;; *) esac
+case $input in [yY]) dnf install -y nodejs-bash-language-server;; *) esac
 
 read -r -p "Download and theme Firefox Nightly? [y/n]: " input
 case $input in [yY])
@@ -109,6 +106,9 @@ case $input in [yY])
     ###
     ;; *)
 esac
+
+echo "Setting default shell to fish..."
+sudo -u "$1" chsh -s /usr/bin/fish
 
 echo ""
 echo "Setup complete! To use mpd/ncmpcpp, mount or move your library to ~/music."

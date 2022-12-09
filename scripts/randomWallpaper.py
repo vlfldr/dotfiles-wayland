@@ -2,7 +2,7 @@ import os
 import random
 import time
 
-wpDir = '/home/steve/wallpapers'
+wpDir = os.path.join(os.path.expanduser('~'), 'wallpapers')
 tMins = 15
 
 os.system('swww init')
