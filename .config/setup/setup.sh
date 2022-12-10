@@ -107,8 +107,9 @@ case $input in [yY])
     mv /usr/share/sddm/themes/sddm-sugar-candy* /usr/share/sddm/themes/sugar-candy
     rm -rf ./sddm-sugar-candy*.tar.gz
     cp wallpapers/safe.jpg /usr/share/sddm/themes/sugar-candy/background.jpg
-    mv .config/sddm/sddm.conf /etc/sddm.conf
-    mv .config/sddm/theme.conf /usr/share/sddm/themes/sugar-candy/theme.conf
+    cp .config/sddm/sddm.conf /etc/
+    cp .config/sddm/theme.conf /usr/share/sddm/themes/sugar-candy/
+    cp .config/sddm/*.qml /usr/share/sddm/themes/sugar-candy/Components/
     ;; *)
     # remove SDDM config files if user declines to install
     rm -rf .config/sddm
