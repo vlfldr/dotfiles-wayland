@@ -6,6 +6,8 @@ if [ $# -eq 0 ]; then
  exit 1
 fi
 
+# remove fedora built-in cp -i alias for no-confirm copies
+unalias cp
 cd "/home/$1" || exit 1 
 
 echo "Updating system packages. This will take a while..."
@@ -37,7 +39,8 @@ dnf upgrade -y
 echo "Installing rice packages..."
 dnf install -y ImageMagick bat bluez borgbackup cava codium fish freeglut fzf git grim slurp kernel-modules-extra \
 kernel-tools hyprland kitty light lsd mpv ncmpcpp neofetch neovim network-manager-applet python3-pillow ranger \
-rpmfusion-free-release rpmfusion-nonfree-release swww sxiv wayland-logout wofi eww
+rpmfusion-free-release rpmfusion-nonfree-release swww sxiv wayland-logout wofi eww qt5‑qtgraphicaleffects \
+qt5‑qtquickcontrols2 qt5‑qtsvg
 
 dnf install -y .config/setup/gotop*.rpm
 rm -f .config/setup/gotop*.rpm
@@ -95,6 +98,20 @@ case $input in [yY])
     ;; *)
     # remove firefox config files if user declines to install
     rm -rf .config/mozilla
+esac
+
+read -r -p "Download and apply SDDM (login screen) theme? [y/n]: " input
+case $input in [yY])
+    wget --content-disposition "https://github.com/Kangie/sddm-sugar-candy/archive/refs/tags/v1.6.tar.gz"
+    tar -xvf ./sddm-sugar-candy*.tar.gz --directory=/usr/share/sddm/themes
+    mv /usr/share/sddm/themes/sddm-sugar-candy* /usr/share/sddm/themes/sugar-candy
+    rm -rf ./sddm-sugar-candy*.tar.gz
+    cp wallpapers/safe.jpg /usr/share/sddm/themes/sugar-candy/background.jpg
+    mv .config/sddm/sddm.conf /etc/sddm.conf
+    mv .config/sddm/theme.conf /usr/share/sddm/themes/sugar-candy/theme.conf
+    ;; *)
+    # remove SDDM config files if user declines to install
+    rm -rf .config/sddm
 esac
 
 echo "Setting default shell to fish..."
